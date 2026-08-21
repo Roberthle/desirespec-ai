@@ -278,4 +278,49 @@ export const SOLUTIONS_DATA: SolutionItem[] = [
       },
     ],
   },
+  {
+    id: 'zero-pressure',
+    slug: 'zero-pressure-intimacy-for-anxious-couples',
+    title: 'Zero-Pressure Intimacy for Anxious Couples & Overcoming Blocks',
+    shortTitle: 'Zero-Pressure Intimacy',
+    tagline: 'Gentle, somatic connection methods for couples experiencing bedroom anxiety, emotional shutdown, or trauma blocks.',
+    metaDescription: 'Step-by-step roadmap to overcome bedroom anxiety, emotional freeze responses, and pressure. Learn non-demanding touch and safe connection postures.',
+    primaryKeywords: [
+      'how to be intimate without pressure',
+      'zero pressure intimacy exercises',
+      'intimacy for couples with anxiety',
+      'how to connect with partner when feeling blocked',
+      'sensate focus exercises at home',
+    ],
+    recommendedPositionIds: ['lazy-sunday', 'lotus-lock', 'tandem-horizon'],
+    painPoints: [
+      'Nervous system locking up into freeze/dissociation during touch',
+      'Feeling an obligation to achieve climax, turning intimacy into a chore',
+      'Fear of disappointing your partner or feeling judged',
+    ],
+    hacksAndAdjustments: [
+      {
+        title: 'Banning Climax / Goal-Free Sessions',
+        description: 'Explicitly agree beforehand that neither partner will seek a climax. This single rule instantly deactivates the brain’s amygdala threat response.',
+      },
+      {
+        title: 'The 3-Minute Heart-to-Heart Hug',
+        description: 'Before removing any clothing, embrace chest-to-chest standing or seated for 3 full minutes. Match your breathing to flood both nervous systems with calming oxytocin.',
+      },
+      {
+        title: 'The Safe Word Protocol (Green / Yellow / Red)',
+        description: 'Give both partners full authority to pause or redirect touch with zero guilt or hurt feelings.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'How do you reconnect intimately when one partner has anxiety?',
+        answer: 'Start with non-demanding touch (Sensate Focus) without any expectation of intercourse. Focus on gentle hand, back, or neck massage, coupled with steady diaphragmatic breathing.',
+      },
+      {
+        question: 'What are the best positions when feeling nervous or blocked?',
+        answer: 'The Lazy Sunday (Side-by-Side Spooning) and Seated Lotus Lock. These positions emphasize warmth, eye contact, and emotional grounding without athletic pressure.',
+      },
+    ],
+  },
 ]

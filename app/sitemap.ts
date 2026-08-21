@@ -22,6 +22,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
     {
+      url: `${baseUrl}/guides/healing-intimacy-blocks-and-body-freezing`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/guides/overcoming-performance-anxiety-and-pressure`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
+    {
       url: `${baseUrl}/guides/compounding-intimacy-for-long-term-couples`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
