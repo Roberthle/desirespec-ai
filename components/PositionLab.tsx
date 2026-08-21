@@ -421,10 +421,9 @@ export default function PositionLab() {
             </div>
           </div>
 
-          {/* Real-Time WebGL 3D Viewport */}
+          {/* Real-Time WebGL 3D Viewport with Selection Propagation */}
           <ThreePositionViewport
-            variant={selectedPosition.svgVariant}
-            thrustVector={selectedPosition.thrustVector}
+            positionData={selectedPosition}
             bpm={cadenceBpm}
             povPreset={povPreset}
           />
