@@ -7,12 +7,29 @@ import * as THREE from 'three'
 import { PositionItem } from '../lib/positionsData'
 
 // ─── Procedural Organic Spline Lathe Geometry Generators ──────────────
-// Generates high-subdivision (64 segments), perfectly smooth organic muscle geometries
+// Generates high-subdivision (64 segments), perfectly smooth organic mannequin geometries
+
+function createMannequinHeadGeometry(): THREE.BufferGeometry {
+  // Stylized Mannequin Head with defined jawline and chin
+  const points: THREE.Vector2[] = [
+    new THREE.Vector2(0.01, 0.28), // Crown
+    new THREE.Vector2(0.12, 0.26),
+    new THREE.Vector2(0.17, 0.18), // Cranium / Forehead
+    new THREE.Vector2(0.165, 0.06), // Cheekbone
+    new THREE.Vector2(0.13, -0.08), // Jawline Angle
+    new THREE.Vector2(0.07, -0.20), // Tapered Chin
+    new THREE.Vector2(0.01, -0.22),
+  ]
+  const curve = new THREE.SplineCurve(points)
+  const geom = new THREE.LatheGeometry(curve.getPoints(32), 48)
+  geom.computeVertexNormals()
+  return geom
+}
 
 function createOrganicTorsoGeometry(isPartnerA: boolean): THREE.BufferGeometry {
   const points: THREE.Vector2[] = []
   if (isPartnerA) {
-    // Muscular Initiator (Broad Chest, Athletic Taper, Pelvic Flare)
+    // Muscular Initiator (Broad Clavicle, Athletic V-Taper, Pelvic Flare)
     points.push(new THREE.Vector2(0.08, 0.45))
     points.push(new THREE.Vector2(0.18, 0.42))
     points.push(new THREE.Vector2(0.30, 0.32)) // Deltoid / Clavicle
@@ -37,6 +54,60 @@ function createOrganicTorsoGeometry(isPartnerA: boolean): THREE.BufferGeometry {
 
   const curve = new THREE.SplineCurve(points)
   const geom = new THREE.LatheGeometry(curve.getPoints(36), 64)
+  geom.computeVertexNormals()
+  return geom
+}
+
+function createUpperArmGeometry(): THREE.BufferGeometry {
+  // Upper Arm: Deltoid cap -> Bicep peak -> Elbow pinch
+  const points: THREE.Vector2[] = [
+    new THREE.Vector2(0.14, 0.24), // Deltoid Cap
+    new THREE.Vector2(0.135, 0.12), // Bicep
+    new THREE.Vector2(0.115, -0.04),
+    new THREE.Vector2(0.09, -0.18), // Elbow joint pinch
+  ]
+  const curve = new THREE.SplineCurve(points)
+  const geom = new THREE.LatheGeometry(curve.getPoints(24), 48)
+  geom.computeVertexNormals()
+  return geom
+}
+
+function createForearmGeometry(): THREE.BufferGeometry {
+  // Forearm: Elbow base -> Brachioradialis swell -> Slender wrist
+  const points: THREE.Vector2[] = [
+    new THREE.Vector2(0.09, 0.22),
+    new THREE.Vector2(0.11, 0.10), // Forearm belly
+    new THREE.Vector2(0.085, -0.08),
+    new THREE.Vector2(0.065, -0.22), // Wrist
+  ]
+  const curve = new THREE.SplineCurve(points)
+  const geom = new THREE.LatheGeometry(curve.getPoints(24), 48)
+  geom.computeVertexNormals()
+  return geom
+}
+
+function createHandGeometry(): THREE.BufferGeometry {
+  // Sculpted Articulated Hand with palm and curved fingers
+  const shape = new THREE.Shape()
+  shape.moveTo(0, 0)
+  shape.lineTo(0.05, -0.04)
+  shape.lineTo(0.06, -0.12)
+  shape.lineTo(0.04, -0.18) // Curled Fingers
+  shape.lineTo(0.01, -0.19)
+  shape.lineTo(-0.03, -0.14)
+  shape.lineTo(-0.04, -0.04) // Thumb base
+  shape.closePath()
+
+  const extrudeSettings = {
+    steps: 2,
+    depth: 0.08,
+    bevelEnabled: true,
+    bevelThickness: 0.03,
+    bevelSize: 0.02,
+    bevelSegments: 4
+  }
+  const geom = new THREE.ExtrudeGeometry(shape, extrudeSettings)
+  geom.center()
   geom.computeVertexNormals()
   return geom
 }
@@ -99,22 +170,45 @@ function createFootGeometry(): THREE.BufferGeometry {
   return geom
 }
 
-function createMuscularArmGeometry(): THREE.BufferGeometry {
-  const points: THREE.Vector2[] = [
-    new THREE.Vector2(0.15, 0.35), // Deltoid Joint
-    new THREE.Vector2(0.14, 0.22), // Bicep Peak
-    new THREE.Vector2(0.12, 0.05),
-    new THREE.Vector2(0.095, -0.05), // Elbow
-    new THREE.Vector2(0.11, -0.18), // Forearm Swell
-    new THREE.Vector2(0.075, -0.32), // Slender Wrist
-  ]
-  const curve = new THREE.SplineCurve(points)
-  const geom = new THREE.LatheGeometry(curve.getPoints(28), 64)
-  geom.computeVertexNormals()
-  return geom
+// ─── Hierarchical 2-Bone Arm Chain Component ──────────────────────────
+function ArticulatedArmChain({
+  upperArmGeom,
+  forearmGeom,
+  handGeom,
+  material,
+  shoulderPos,
+  shoulderRot,
+  elbowRot,
+  wristRot
+}: {
+  upperArmGeom: THREE.BufferGeometry
+  forearmGeom: THREE.BufferGeometry
+  handGeom: THREE.BufferGeometry
+  material: THREE.Material
+  shoulderPos: [number, number, number]
+  shoulderRot: [number, number, number]
+  elbowRot: [number, number, number]
+  wristRot: [number, number, number]
+}) {
+  return (
+    // 1. Shoulder Joint & Upper Arm
+    <group position={shoulderPos} rotation={shoulderRot}>
+      <mesh geometry={upperArmGeom} material={material} />
+
+      {/* 2. Articulated Elbow Joint (Nested at base of upper arm) */}
+      <group position={[0, -0.24, 0]} rotation={elbowRot}>
+        <mesh geometry={forearmGeom} position={[0, -0.22, 0]} material={material} />
+
+        {/* 3. Articulated Wrist Joint & Gripping Hand */}
+        <group position={[0, -0.44, 0]} rotation={wristRot}>
+          <mesh geometry={handGeom} material={material} scale={[0.75, 0.75, 0.75]} />
+        </group>
+      </group>
+    </group>
+  )
 }
 
-// ─── Hierarchical Articulated Leg Chain Component ────────────────────
+// ─── Hierarchical 2-Bone Leg Chain Component ──────────────────────────
 function ArticulatedLegChain({
   thighGeom,
   calfGeom,
@@ -165,17 +259,17 @@ function ArticulatedAnatomyModel({
   const partnerBRef = useRef<THREE.Group>(null)
   const hotspotRef = useRef<THREE.Mesh>(null)
 
-  // Luxury Velvet & Platinum Shaders with Subsurface Clearcoat Highlights
+  // Luxury Exhibition Chrome & Obsidian PBR Materials
   const goldMaterial = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color('#E07A1E'),
+        color: new THREE.Color('#D97706'),
         emissive: new THREE.Color('#3A1202'),
-        emissiveIntensity: 0.28,
-        roughness: 0.32,
-        metalness: 0.10,
-        clearcoat: 0.55,
-        clearcoatRoughness: 0.25,
+        emissiveIntensity: 0.22,
+        roughness: 0.18,
+        metalness: 0.25,
+        clearcoat: 0.85,
+        clearcoatRoughness: 0.15,
         flatShading: false,
       }),
     []
@@ -184,25 +278,28 @@ function ArticulatedAnatomyModel({
   const roseMaterial = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color('#FB7185'),
+        color: new THREE.Color('#F43F5E'),
         emissive: new THREE.Color('#4C0519'),
-        emissiveIntensity: 0.32,
-        roughness: 0.26,
-        metalness: 0.12,
-        clearcoat: 0.70,
-        clearcoatRoughness: 0.20,
+        emissiveIntensity: 0.25,
+        roughness: 0.14,
+        metalness: 0.30,
+        clearcoat: 0.95,
+        clearcoatRoughness: 0.10,
         flatShading: false,
       }),
     []
   )
 
   // Memoized Organic Spline Geometries
+  const headGeom = useMemo(() => createMannequinHeadGeometry(), [])
   const partnerATorsoGeom = useMemo(() => createOrganicTorsoGeometry(true), [])
   const partnerBTorsoGeom = useMemo(() => createOrganicTorsoGeometry(false), [])
+  const upperArmGeom = useMemo(() => createUpperArmGeometry(), [])
+  const forearmGeom = useMemo(() => createForearmGeometry(), [])
+  const handGeom = useMemo(() => createHandGeometry(), [])
   const thighGeom = useMemo(() => createMuscularThighGeometry(), [])
   const calfGeom = useMemo(() => createSculptedCalfGeometry(), [])
   const footGeom = useMemo(() => createFootGeometry(), [])
-  const armGeom = useMemo(() => createMuscularArmGeometry(), [])
 
   // Classify active pose archetype based on category / variant
   const poseArchetype = useMemo(() => {
@@ -258,55 +355,96 @@ function ArticulatedAnatomyModel({
     <group ref={rootGroupRef} position={[0, 0, 0]}>
       {/* ─────────────────────────────────────────────────────────────────
           POSE 1: POV_LEGS_WRAPPED (High-Angle, Piledriver, Anvil, Bridge)
-          Full legs elevated & wrapping around Partner A's flank / back
+          Full Mannequins: Arms embracing shoulders, legs wrapped around waist
          ───────────────────────────────────────────────────────────────── */}
       {poseArchetype === 'POV_LEGS_WRAPPED' && (
         <>
-          {/* Partner B (Receiver - Rose) Lying Back with Complete Wrapped Legs */}
+          {/* Partner B (Receiver - Rose Platinum Mannequin) */}
           <group ref={partnerBRef} position={[0, 0.45, -0.3]} rotation={[tiltRad * 0.3, 0, 0]}>
-            {/* Head */}
-            <mesh position={[-0.85, 0.2, 0]} material={roseMaterial}>
-              <sphereGeometry args={[0.22, 32, 32]} />
-            </mesh>
-            {/* Curvaceous Organic Torso */}
+            {/* Mannequin Head & Tilted Neck */}
+            <group position={[-0.85, 0.25, 0]} rotation={[0, 0, 0.2]}>
+              <mesh geometry={headGeom} material={roseMaterial} />
+            </group>
+            {/* Curvaceous Organic Torso & Bust */}
             <mesh position={[-0.22, 0.15, 0]} rotation={[0, 0, 1.55]} geometry={partnerBTorsoGeom} material={roseMaterial} />
-
-            {/* Bust Contours */}
             <mesh position={[-0.35, 0.28, 0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
             <mesh position={[-0.35, 0.28, -0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
 
-            {/* LEFT FULL-LENGTH LEG (Wrapping around right side of Partner A) */}
+            {/* ARTICULATED ARMS (Reaching up to embrace Partner A's neck/shoulders) */}
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[-0.45, 0.28, 0.26]}
+              shoulderRot={[0.6, 0.4, -1.2]}
+              elbowRot={[-1.4, 0.2, 0]}
+              wristRot={[0.4, 0.2, 0.5]}
+            />
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[-0.45, 0.28, -0.26]}
+              shoulderRot={[-0.6, -0.4, -1.2]}
+              elbowRot={[1.4, -0.2, 0]}
+              wristRot={[-0.4, -0.2, 0.5]}
+            />
+
+            {/* FULL-LENGTH ARTICULATED LEGS (Wrapping tightly around Partner A's waist) */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
               footGeom={footGeom}
               material={roseMaterial}
               hipPos={[0.22, 0.25, 0.28]}
-              hipRot={[-0.9, 0.4, -0.8]} // Thigh reaching up & around
-              kneeRot={[1.6, -0.3, 0.2]} // Knee bent 90° wrapping flank
-              ankleRot={[0.4, 0.2, 0.8]} // Arched foot crossed behind back
+              hipRot={[-0.9, 0.4, -0.8]}
+              kneeRot={[1.6, -0.3, 0.2]}
+              ankleRot={[0.4, 0.2, 0.8]}
             />
-
-            {/* RIGHT FULL-LENGTH LEG (Wrapping around left side of Partner A) */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
               footGeom={footGeom}
               material={roseMaterial}
               hipPos={[0.22, 0.25, -0.28]}
-              hipRot={[0.9, -0.4, -0.8]} // Thigh reaching up & around
-              kneeRot={[-1.6, 0.3, 0.2]} // Knee bent 90° wrapping flank
-              ankleRot={[-0.4, -0.2, 0.8]} // Arched foot crossed behind back
+              hipRot={[0.9, -0.4, -0.8]}
+              kneeRot={[-1.6, 0.3, 0.2]}
+              ankleRot={[-0.4, -0.2, 0.8]}
             />
           </group>
 
-          {/* Partner A (Initiator - Gold) Kneeling Downward Plunge */}
+          {/* Partner A (Initiator - Obsidian Gold Mannequin) */}
           <group ref={partnerARef} position={[0.25, 0.85, 0.32]}>
-            <mesh position={[0.4, 0.95, 0]} material={goldMaterial}><sphereGeometry args={[0.25, 32, 32]} /></mesh>
+            {/* Mannequin Head Looking Down at Partner B */}
+            <group position={[0.4, 0.95, 0]} rotation={[0, 0, -0.35]}>
+              <mesh geometry={headGeom} material={goldMaterial} />
+            </group>
             <mesh position={[0.25, 0.55, 0]} rotation={[0, 0, -0.45]} geometry={partnerATorsoGeom} material={goldMaterial} />
-            {/* Deltoids & Sculpted Arms */}
-            <mesh position={[-0.05, 0.45, 0.42]} rotation={[0.4, 0.2, -0.8]} geometry={armGeom} material={goldMaterial} />
-            <mesh position={[-0.05, 0.45, -0.42]} rotation={[-0.4, -0.2, -0.8]} geometry={armGeom} material={goldMaterial} />
+
+            {/* ARTICULATED ARMS (Hands planted gripping Partner B's hips/waist) */}
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={goldMaterial}
+              shoulderPos={[0.18, 0.65, 0.34]}
+              shoulderRot={[0.4, 0.2, -0.8]}
+              elbowRot={[-0.8, 0.1, 0]}
+              wristRot={[0.3, 0.2, 0.4]}
+            />
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={goldMaterial}
+              shoulderPos={[0.18, 0.65, -0.34]}
+              shoulderRot={[-0.4, -0.2, -0.8]}
+              elbowRot={[0.8, -0.1, 0]}
+              wristRot={[-0.3, -0.2, 0.4]}
+            />
+
             {/* Kneeling Legs */}
             <mesh position={[0.35, -0.25, 0.45]} rotation={[0.3, 0.2, 0.8]} geometry={thighGeom} material={goldMaterial} />
             <mesh position={[0.35, -0.25, -0.45]} rotation={[-0.3, -0.2, 0.8]} geometry={thighGeom} material={goldMaterial} />
@@ -316,16 +454,40 @@ function ArticulatedAnatomyModel({
 
       {/* ─────────────────────────────────────────────────────────────────
           POSE 2: PRONE_ARCH (Modified Prone Bone, Obsidian Clamp, Hammock)
-          Full legs extended straight trailing along surface
+          Full Mannequins: Braced forearms, arched back, rear hip grip
          ───────────────────────────────────────────────────────────────── */}
       {poseArchetype === 'PRONE_ARCH' && (
         <>
-          {/* Partner B (Receiver - Rose) Prone with Full-Length Trailing Legs */}
+          {/* Partner B (Receiver - Rose Platinum Mannequin) */}
           <group ref={partnerBRef} position={[0, 0.35, 0]}>
-            <mesh position={[-0.95, 0.15, 0]} material={roseMaterial}><sphereGeometry args={[0.21, 32, 32]} /></mesh>
+            <group position={[-0.95, 0.22, 0]} rotation={[0, 0, 0.1]}>
+              <mesh geometry={headGeom} material={roseMaterial} />
+            </group>
             <mesh position={[-0.35, 0.22, 0]} rotation={[0, 0, 1.4]} geometry={partnerBTorsoGeom} material={roseMaterial} />
 
-            {/* Left Extended Leg */}
+            {/* Arms Braced Forward on Mattress */}
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[-0.55, 0.25, 0.24]}
+              shoulderRot={[0.3, 0, 1.2]}
+              elbowRot={[-1.2, 0, 0]}
+              wristRot={[0.2, 0, 0]}
+            />
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[-0.55, 0.25, -0.24]}
+              shoulderRot={[-0.3, 0, 1.2]}
+              elbowRot={[1.2, 0, 0]}
+              wristRot={[-0.2, 0, 0]}
+            />
+
+            {/* Trailing Legs */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -336,7 +498,6 @@ function ArticulatedAnatomyModel({
               kneeRot={[0, 0, 0.1]}
               ankleRot={[0, 0, -0.3]}
             />
-            {/* Right Extended Leg */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -349,12 +510,35 @@ function ArticulatedAnatomyModel({
             />
           </group>
 
-          {/* Partner A (Initiator - Gold) Mounted Dominant Over Pelvis */}
+          {/* Partner A (Initiator - Obsidian Gold Mannequin) */}
           <group ref={partnerARef} position={[-0.05, 0.7, 0.28]}>
-            <mesh position={[-0.15, 0.85, 0]} material={goldMaterial}><sphereGeometry args={[0.24, 32, 32]} /></mesh>
+            <group position={[-0.15, 0.85, 0]} rotation={[0, 0, -0.2]}>
+              <mesh geometry={headGeom} material={goldMaterial} />
+            </group>
             <mesh position={[-0.1, 0.45, 0]} rotation={[0, 0, -0.2]} geometry={partnerATorsoGeom} material={goldMaterial} />
-            <mesh position={[-0.25, 0.18, 0.35]} rotation={[0.4, 0.1, -0.6]} geometry={armGeom} material={goldMaterial} />
-            <mesh position={[-0.25, 0.18, -0.35]} rotation={[-0.4, -0.1, -0.6]} geometry={armGeom} material={goldMaterial} />
+
+            {/* Hands Gripping Receiver's Waist */}
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={goldMaterial}
+              shoulderPos={[-0.12, 0.55, 0.32]}
+              shoulderRot={[0.4, 0.1, -0.6]}
+              elbowRot={[-0.6, 0, 0]}
+              wristRot={[0.2, 0.1, 0.3]}
+            />
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={goldMaterial}
+              shoulderPos={[-0.12, 0.55, -0.32]}
+              shoulderRot={[-0.4, -0.1, -0.6]}
+              elbowRot={[0.6, 0, 0]}
+              wristRot={[-0.2, -0.1, 0.3]}
+            />
+
             <mesh position={[0.25, -0.28, 0.42]} rotation={[0.4, 0.2, 0.9]} geometry={thighGeom} material={goldMaterial} />
             <mesh position={[0.25, -0.28, -0.42]} rotation={[-0.4, -0.2, 0.9]} geometry={thighGeom} material={goldMaterial} />
           </group>
@@ -363,28 +547,52 @@ function ArticulatedAnatomyModel({
 
       {/* ─────────────────────────────────────────────────────────────────
           POSE 3: STRADDLE_COWGIRL (Overdrive, Amazon, Sovereign, G-Throne)
-          Full legs straddling & flanking partner hips
+          Full Mannequins: Upright lean-back with hands on knees/chest
          ───────────────────────────────────────────────────────────────── */}
       {poseArchetype === 'STRADDLE_COWGIRL' && (
         <>
-          {/* Partner A (Base Reclined - Gold) */}
+          {/* Partner A (Base Reclined Mannequin - Gold) */}
           <group ref={partnerARef} position={[-0.3, 0.3, 0]}>
-            <mesh position={[-0.75, 0.15, 0]} material={goldMaterial}><sphereGeometry args={[0.23, 32, 32]} /></mesh>
+            <group position={[-0.75, 0.25, 0]} rotation={[0, 0, 0.2]}>
+              <mesh geometry={headGeom} material={goldMaterial} />
+            </group>
             <mesh position={[-0.1, 0.15, 0]} rotation={[0, 0, 1.55]} geometry={partnerATorsoGeom} material={goldMaterial} />
             <mesh position={[0.75, 0.15, 0.25]} rotation={[0, 0, 1.55]} geometry={thighGeom} material={goldMaterial} />
             <mesh position={[0.75, 0.15, -0.25]} rotation={[0, 0, 1.55]} geometry={thighGeom} material={goldMaterial} />
           </group>
 
-          {/* Partner B (Top Straddling - Rose) Full Legs Flanking */}
+          {/* Partner B (Top Straddling Mannequin - Rose) */}
           <group ref={partnerBRef} position={[0.12, 0.85, 0]}>
-            <mesh position={[0.45, 0.85, 0]} material={roseMaterial}><sphereGeometry args={[0.22, 32, 32]} /></mesh>
+            <group position={[0.45, 0.88, 0]} rotation={[0, 0, -0.45]}>
+              <mesh geometry={headGeom} material={roseMaterial} />
+            </group>
             <mesh position={[0.22, 0.45, 0]} rotation={[0, 0, -0.45]} geometry={partnerBTorsoGeom} material={roseMaterial} />
             <mesh position={[0.2, 0.55, 0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
             <mesh position={[0.2, 0.55, -0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
-            <mesh position={[0.35, 0.15, 0.38]} rotation={[0.3, 0.1, 0.3]} geometry={armGeom} material={roseMaterial} />
-            <mesh position={[0.35, 0.15, -0.38]} rotation={[-0.3, -0.1, 0.3]} geometry={armGeom} material={roseMaterial} />
 
-            {/* Left Straddling Leg (Knee bent tight, foot tucked) */}
+            {/* Hands Supporting on Partner A's Knees */}
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[0.28, 0.52, 0.26]}
+              shoulderRot={[0.3, 0.1, 0.4]}
+              elbowRot={[-0.5, 0, 0]}
+              wristRot={[0.3, 0, 0]}
+            />
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[0.28, 0.52, -0.26]}
+              shoulderRot={[-0.3, -0.1, 0.4]}
+              elbowRot={[0.5, 0, 0]}
+              wristRot={[-0.3, 0, 0]}
+            />
+
+            {/* Straddling Legs */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -395,7 +603,6 @@ function ArticulatedAnatomyModel({
               kneeRot={[-1.8, 0, 0]}
               ankleRot={[0.5, 0, 0]}
             />
-            {/* Right Straddling Leg (Knee bent tight, foot tucked) */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -412,7 +619,7 @@ function ArticulatedAnatomyModel({
 
       {/* ─────────────────────────────────────────────────────────────────
           POSE 4: STANDING_LIFT (Wall Pin, Counter Press, Standing Helix)
-          Full legs hoisted & locked around waist
+          Full Mannequins: Hoisted standing carry with full arms & legs
          ───────────────────────────────────────────────────────────────── */}
       {poseArchetype === 'STANDING_LIFT' && (
         <>
@@ -421,14 +628,38 @@ function ArticulatedAnatomyModel({
             <meshStandardMaterial color="#120F09" roughness={0.9} />
           </mesh>
 
-          {/* Partner B (Receiver - Rose) Hoisted with Full Locked Legs */}
+          {/* Partner B (Receiver - Rose Platinum Mannequin) */}
           <group ref={partnerBRef} position={[-0.35, 1.1, 0]}>
-            <mesh position={[-0.05, 0.75, 0]} material={roseMaterial}><sphereGeometry args={[0.22, 32, 32]} /></mesh>
+            <group position={[-0.05, 0.78, 0]} rotation={[0, 0, 0.1]}>
+              <mesh geometry={headGeom} material={roseMaterial} />
+            </group>
             <mesh position={[-0.02, 0.35, 0]} rotation={[0, 0, 0.1]} geometry={partnerBTorsoGeom} material={roseMaterial} />
             <mesh position={[0.02, 0.45, 0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
             <mesh position={[0.02, 0.45, -0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
 
-            {/* Left Hoisted Leg */}
+            {/* Arms around Initiator's Neck */}
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[0.02, 0.48, 0.24]}
+              shoulderRot={[0.5, 0.2, -0.8]}
+              elbowRot={[-1.2, 0, 0]}
+              wristRot={[0.3, 0.2, 0.4]}
+            />
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[0.02, 0.48, -0.24]}
+              shoulderRot={[-0.5, -0.2, -0.8]}
+              elbowRot={[1.2, 0, 0]}
+              wristRot={[-0.3, -0.2, 0.4]}
+            />
+
+            {/* Hoisted Legs */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -439,7 +670,6 @@ function ArticulatedAnatomyModel({
               kneeRot={[1.7, -0.2, 0]}
               ankleRot={[0.4, 0.2, 0.6]}
             />
-            {/* Right Hoisted Leg */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -452,12 +682,35 @@ function ArticulatedAnatomyModel({
             />
           </group>
 
-          {/* Partner A (Initiator - Gold) Standing Power Stance */}
+          {/* Partner A (Initiator - Obsidian Gold Mannequin) */}
           <group ref={partnerARef} position={[0.22, 0.95, 0.25]}>
-            <mesh position={[0.18, 0.85, 0]} material={goldMaterial}><sphereGeometry args={[0.25, 32, 32]} /></mesh>
+            <group position={[0.18, 0.88, 0]} rotation={[0, 0, -0.2]}>
+              <mesh geometry={headGeom} material={goldMaterial} />
+            </group>
             <mesh position={[0.12, 0.45, 0]} rotation={[0, 0, -0.25]} geometry={partnerATorsoGeom} material={goldMaterial} />
-            <mesh position={[-0.15, 0.2, 0.35]} rotation={[0.4, 0.2, -0.9]} geometry={armGeom} material={goldMaterial} />
-            <mesh position={[-0.15, 0.2, -0.35]} rotation={[-0.4, -0.2, -0.9]} geometry={armGeom} material={goldMaterial} />
+
+            {/* Lifting Arms Under Thighs */}
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={goldMaterial}
+              shoulderPos={[0.15, 0.55, 0.32]}
+              shoulderRot={[0.4, 0.2, -0.9]}
+              elbowRot={[-1.0, 0, 0]}
+              wristRot={[0.4, 0.2, 0.3]}
+            />
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={goldMaterial}
+              shoulderPos={[0.15, 0.55, -0.32]}
+              shoulderRot={[-0.4, -0.2, -0.9]}
+              elbowRot={[1.0, 0, 0]}
+              wristRot={[-0.4, -0.2, 0.3]}
+            />
+
             <mesh position={[0.18, -0.42, 0.25]} rotation={[0.1, 0, 0.1]} geometry={thighGeom} material={goldMaterial} />
             <mesh position={[0.18, -0.42, -0.25]} rotation={[-0.1, 0, 0.1]} geometry={thighGeom} material={goldMaterial} />
           </group>
@@ -466,18 +719,42 @@ function ArticulatedAnatomyModel({
 
       {/* ─────────────────────────────────────────────────────────────────
           POSE 5: SEATED_LOTUS (Lotus Lock, Velvet Trap, Obsidian Spoon)
-          Full legs intertwined around Partner A
+          Full Mannequins: Chest-to-chest embrace with mutual arm/leg wrap
          ───────────────────────────────────────────────────────────────── */}
       {poseArchetype === 'SEATED_LOTUS' && (
         <>
-          {/* Partner B (Receiver - Rose) Seated with Intertwined Legs */}
+          {/* Partner B (Receiver - Rose Platinum Mannequin) */}
           <group ref={partnerBRef} position={[-0.2, 0.65, 0]}>
-            <mesh position={[-0.15, 0.75, 0]} material={roseMaterial}><sphereGeometry args={[0.22, 32, 32]} /></mesh>
+            <group position={[-0.15, 0.78, 0]} rotation={[0, 0, 0.15]}>
+              <mesh geometry={headGeom} material={roseMaterial} />
+            </group>
             <mesh position={[-0.08, 0.38, 0]} rotation={[0, 0, 0.15]} geometry={partnerBTorsoGeom} material={roseMaterial} />
             <mesh position={[-0.06, 0.46, 0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
             <mesh position={[-0.06, 0.46, -0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
 
-            {/* Left Interlaced Leg */}
+            {/* Embracing Arms */}
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[-0.08, 0.52, 0.24]}
+              shoulderRot={[0.4, 0.2, -0.8]}
+              elbowRot={[-1.2, 0, 0]}
+              wristRot={[0.3, 0.2, 0.4]}
+            />
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={roseMaterial}
+              shoulderPos={[-0.08, 0.52, -0.24]}
+              shoulderRot={[-0.4, -0.2, -0.8]}
+              elbowRot={[1.2, 0, 0]}
+              wristRot={[-0.3, -0.2, 0.4]}
+            />
+
+            {/* Interlaced Legs */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -488,7 +765,6 @@ function ArticulatedAnatomyModel({
               kneeRot={[1.6, -0.2, 0]}
               ankleRot={[0.3, 0.2, 0.5]}
             />
-            {/* Right Interlaced Leg */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -501,12 +777,35 @@ function ArticulatedAnatomyModel({
             />
           </group>
 
-          {/* Partner A (Initiator - Gold) Embracing Upright */}
+          {/* Partner A (Initiator - Obsidian Gold Mannequin) */}
           <group ref={partnerARef} position={[0.2, 0.7, 0.2]}>
-            <mesh position={[0.12, 0.78, 0]} material={goldMaterial}><sphereGeometry args={[0.25, 32, 32]} /></mesh>
+            <group position={[0.12, 0.82, 0]} rotation={[0, 0, -0.2]}>
+              <mesh geometry={headGeom} material={goldMaterial} />
+            </group>
             <mesh position={[0.08, 0.42, 0]} rotation={[0, 0, -0.2]} geometry={partnerATorsoGeom} material={goldMaterial} />
-            <mesh position={[-0.18, 0.35, 0.3]} rotation={[0.3, 0.1, -0.8]} geometry={armGeom} material={goldMaterial} />
-            <mesh position={[-0.18, 0.35, -0.3]} rotation={[-0.3, -0.1, -0.8]} geometry={armGeom} material={goldMaterial} />
+
+            {/* Embracing Arms */}
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={goldMaterial}
+              shoulderPos={[0.12, 0.55, 0.32]}
+              shoulderRot={[0.3, 0.1, -0.8]}
+              elbowRot={[-1.1, 0, 0]}
+              wristRot={[0.2, 0.1, 0.3]}
+            />
+            <ArticulatedArmChain
+              upperArmGeom={upperArmGeom}
+              forearmGeom={forearmGeom}
+              handGeom={handGeom}
+              material={goldMaterial}
+              shoulderPos={[0.12, 0.55, -0.32]}
+              shoulderRot={[-0.3, -0.1, -0.8]}
+              elbowRot={[1.1, 0, 0]}
+              wristRot={[-0.2, -0.1, 0.3]}
+            />
+
             <mesh position={[0.2, -0.22, 0.38]} rotation={[0.3, 0.1, 0.9]} geometry={thighGeom} material={goldMaterial} />
             <mesh position={[0.2, -0.22, -0.38]} rotation={[-0.3, -0.1, 0.9]} geometry={thighGeom} material={goldMaterial} />
           </group>
@@ -537,10 +836,10 @@ export default function ThreePositionViewport({
   const cameraConfig = useMemo(() => {
     switch (povPreset) {
       case 'povA':
-        // Partner A First-Person POV (Looking Downward along Torso with Full Leg Wrap in view)
+        // Partner A First-Person POV (Looking Downward along Torso with Full Leg Wrap & Arms in view)
         return { position: [0.25, 1.85, 0.85] as [number, number, number], fov: 64 }
       case 'povB':
-        // Partner B First-Person POV (Looking Upward at Partner A)
+        // Partner B First-Person POV (Looking Upward at Partner A with Head and Shoulders in view)
         return { position: [-1.15, 0.75, 0] as [number, number, number], fov: 58 }
       case 'pelvicZoom':
         // Close-up on pelvic alignment & penetration angle
@@ -600,12 +899,12 @@ export default function ThreePositionViewport({
       {/* Two-Tone Identity Legend Badge */}
       <div className="absolute bottom-3 left-3 bg-[#0a0906]/90 px-3.5 py-2 rounded-xl border border-[rgba(245,232,200,0.15)] flex items-center gap-4 text-xs tracking-wider backdrop-blur-md shadow-lg pointer-events-none">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#E07A1E] shadow-[0_0_8px_#E07A1E]" />
-          <span className="text-[#FDE68A] font-medium">Initiator (Obsidian Amber)</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#D97706] shadow-[0_0_8px_#D97706]" />
+          <span className="text-[#FDE68A] font-medium">Initiator (Obsidian Gold Mannequin)</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#FB7185] shadow-[0_0_8px_#FB7185]" />
-          <span className="text-[#FBCFE8] font-medium">Receiver (Rose Velvet)</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#F43F5E] shadow-[0_0_8px_#F43F5E]" />
+          <span className="text-[#FBCFE8] font-medium">Receiver (Rose Platinum Mannequin)</span>
         </div>
       </div>
 
