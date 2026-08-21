@@ -69,7 +69,7 @@ export default function Home() {
               className="text-4xl md:text-5xl font-light text-[#f5e8c8] leading-tight"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
-              Understand desire.{' '}
+              Understand their desire.{' '}
               <span className="italic text-[#e8a020]">Deepen connection.</span>
             </h1>
           </motion.div>
