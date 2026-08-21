@@ -2,11 +2,23 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { POSITIONS_DATA, PositionItem } from '../../../lib/positionsData'
+import { POSITION_ALIASES } from '../../../lib/positionAliases'
 
 export async function generateStaticParams() {
-  return POSITIONS_DATA.map((p) => ({
-    slug: p.id,
-  }))
+  const canonicalParams = POSITIONS_DATA.map((p) => ({ slug: p.id }))
+  const aliasParams = Object.keys(POSITION_ALIASES).map((alias) => ({ slug: alias }))
+  return [...canonicalParams, ...aliasParams]
+}
+
+function resolvePosition(slug: string): PositionItem | undefined {
+  const direct = POSITIONS_DATA.find((p) => p.id === slug)
+  if (direct) return direct
+
+  const mappedId = POSITION_ALIASES[slug]
+  if (mappedId) {
+    return POSITIONS_DATA.find((p) => p.id === mappedId)
+  }
+  return undefined
 }
 
 export async function generateMetadata({
@@ -14,25 +26,33 @@ export async function generateMetadata({
 }: {
   params: { slug: string }
 }): Promise<Metadata> {
-  const position = POSITIONS_DATA.find((p) => p.id === params.slug)
+  const position = resolvePosition(params.slug)
   if (!position) return { title: 'Position Not Found | DesireSpec AI' }
 
+  // Format title for high-volume searches
+  const displayTitle = params.slug.includes('-')
+    ? params.slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+    : position.name
+
   return {
-    title: `${position.name} - Biomechanics & Pelvic Alignment | DesireSpec AI`,
+    title: `${displayTitle} - Biomechanics, Angles & Intimacy Guide | DesireSpec AI`,
     description: `${position.tagline} Anatomical analysis, ${position.pelvicTiltDeg}° pelvic tilt angle, ${position.depthRating}/10 depth, and ${position.thrustVector} cadence guide.`,
     keywords: [
+      displayTitle,
       position.name,
       position.category,
+      'mindful intimacy',
+      'healthy alternative to porn',
       'pelvic tilt',
       'sexual biomechanics',
       'intimacy positions',
       'DesireSpec AI',
     ],
     openGraph: {
-      title: `${position.name} | DesireSpec AI Biomechanics`,
+      title: `${displayTitle} | DesireSpec AI Mindful Biomechanics`,
       description: position.tagline,
       type: 'article',
-      url: `https://desirespec-ai.onrender.com/positions/${position.id}`,
+      url: `https://desirespec-ai.onrender.com/positions/${params.slug}`,
     },
   }
 }
@@ -42,7 +62,7 @@ export default function PositionDetailPage({
 }: {
   params: { slug: string }
 }) {
-  const position = POSITIONS_DATA.find((p) => p.id === params.slug)
+  const position = resolvePosition(params.slug)
   if (!position) notFound()
 
   // JSON-LD Structured Data Schema for Search Engines (pSEO)

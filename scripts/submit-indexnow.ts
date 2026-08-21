@@ -1,5 +1,6 @@
 import { POSITIONS_DATA } from '../lib/positionsData'
 import { SOLUTIONS_DATA } from '../lib/solutionsData'
+import { POSITION_ALIASES } from '../lib/positionAliases'
 
 const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/indexnow'
 const HOST = 'desirespec-ai.onrender.com'
@@ -11,9 +12,12 @@ async function submitToIndexNow() {
 
   const urlList = [
     `https://${HOST}/`,
+    `https://${HOST}/guides/the-anti-porn-intimacy-reset`,
+    `https://${HOST}/guides/compounding-intimacy-for-long-term-couples`,
     `https://${HOST}/guides/pelvic-tilt-biomechanics`,
     ...SOLUTIONS_DATA.map((s) => `https://${HOST}/solutions/${s.slug}`),
     ...POSITIONS_DATA.map((p) => `https://${HOST}/positions/${p.id}`),
+    ...Object.keys(POSITION_ALIASES).map((alias) => `https://${HOST}/positions/${alias}`),
   ]
 
   const payload = {
