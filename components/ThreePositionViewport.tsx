@@ -9,12 +9,12 @@ import { PositionItem } from '../lib/positionsData'
 // ─── Procedural Organic Spline Lathe Geometry Generators ──────────────
 function createMannequinHeadGeometry(): THREE.BufferGeometry {
   const points: THREE.Vector2[] = [
-    new THREE.Vector2(0.01, 0.28), // Crown
+    new THREE.Vector2(0.01, 0.28),
     new THREE.Vector2(0.12, 0.26),
-    new THREE.Vector2(0.17, 0.18), // Cranium / Forehead
-    new THREE.Vector2(0.165, 0.06), // Cheekbone
-    new THREE.Vector2(0.13, -0.08), // Jawline Angle
-    new THREE.Vector2(0.07, -0.20), // Tapered Chin
+    new THREE.Vector2(0.17, 0.18),
+    new THREE.Vector2(0.165, 0.06),
+    new THREE.Vector2(0.13, -0.08),
+    new THREE.Vector2(0.07, -0.20),
     new THREE.Vector2(0.01, -0.22),
   ]
   const curve = new THREE.SplineCurve(points)
@@ -26,26 +26,24 @@ function createMannequinHeadGeometry(): THREE.BufferGeometry {
 function createOrganicTorsoGeometry(isPartnerA: boolean): THREE.BufferGeometry {
   const points: THREE.Vector2[] = []
   if (isPartnerA) {
-    // Muscular Initiator (Broad Clavicle, Athletic V-Taper, Pelvic Flare)
     points.push(new THREE.Vector2(0.08, 0.45))
     points.push(new THREE.Vector2(0.18, 0.42))
-    points.push(new THREE.Vector2(0.30, 0.32)) // Deltoid / Clavicle
-    points.push(new THREE.Vector2(0.32, 0.20)) // Upper Pec / Lats
-    points.push(new THREE.Vector2(0.28, 0.05)) // Mid Ribcage
-    points.push(new THREE.Vector2(0.22, -0.15)) // Athletic Waist Cinch
-    points.push(new THREE.Vector2(0.26, -0.32)) // Iliac Crest / Pelvic Flare
-    points.push(new THREE.Vector2(0.28, -0.45)) // Glute Mass
+    points.push(new THREE.Vector2(0.30, 0.32))
+    points.push(new THREE.Vector2(0.32, 0.20))
+    points.push(new THREE.Vector2(0.28, 0.05))
+    points.push(new THREE.Vector2(0.22, -0.15))
+    points.push(new THREE.Vector2(0.26, -0.32))
+    points.push(new THREE.Vector2(0.28, -0.45))
     points.push(new THREE.Vector2(0.12, -0.52))
   } else {
-    // Curvaceous Receiver (Slender Neck, Elegant Ribcage, Deep Waist, Voluptuous Hips)
     points.push(new THREE.Vector2(0.06, 0.42))
     points.push(new THREE.Vector2(0.14, 0.38))
-    points.push(new THREE.Vector2(0.23, 0.28)) // Clavicle / Upper Chest
-    points.push(new THREE.Vector2(0.26, 0.16)) // Bust Line
-    points.push(new THREE.Vector2(0.22, 0.02)) // Lower Ribcage
-    points.push(new THREE.Vector2(0.16, -0.14)) // Deep Feminine Waist
-    points.push(new THREE.Vector2(0.25, -0.28)) // Hip Curve Transition
-    points.push(new THREE.Vector2(0.30, -0.42)) // Voluptuous Glute / Pelvis
+    points.push(new THREE.Vector2(0.23, 0.28))
+    points.push(new THREE.Vector2(0.26, 0.16))
+    points.push(new THREE.Vector2(0.22, 0.02))
+    points.push(new THREE.Vector2(0.16, -0.14))
+    points.push(new THREE.Vector2(0.25, -0.28))
+    points.push(new THREE.Vector2(0.30, -0.42))
     points.push(new THREE.Vector2(0.10, -0.50))
   }
 
@@ -57,10 +55,10 @@ function createOrganicTorsoGeometry(isPartnerA: boolean): THREE.BufferGeometry {
 
 function createUpperArmGeometry(): THREE.BufferGeometry {
   const points: THREE.Vector2[] = [
-    new THREE.Vector2(0.14, 0.24), // Deltoid Cap
-    new THREE.Vector2(0.135, 0.12), // Bicep
+    new THREE.Vector2(0.14, 0.24),
+    new THREE.Vector2(0.135, 0.12),
     new THREE.Vector2(0.115, -0.04),
-    new THREE.Vector2(0.09, -0.18), // Elbow joint pinch
+    new THREE.Vector2(0.09, -0.18),
   ]
   const curve = new THREE.SplineCurve(points)
   const geom = new THREE.LatheGeometry(curve.getPoints(24), 48)
@@ -71,9 +69,9 @@ function createUpperArmGeometry(): THREE.BufferGeometry {
 function createForearmGeometry(): THREE.BufferGeometry {
   const points: THREE.Vector2[] = [
     new THREE.Vector2(0.09, 0.22),
-    new THREE.Vector2(0.11, 0.10), // Forearm belly
+    new THREE.Vector2(0.11, 0.10),
     new THREE.Vector2(0.085, -0.08),
-    new THREE.Vector2(0.065, -0.22), // Wrist
+    new THREE.Vector2(0.065, -0.22),
   ]
   const curve = new THREE.SplineCurve(points)
   const geom = new THREE.LatheGeometry(curve.getPoints(24), 48)
@@ -86,10 +84,10 @@ function createHandGeometry(): THREE.BufferGeometry {
   shape.moveTo(0, 0)
   shape.lineTo(0.05, -0.04)
   shape.lineTo(0.06, -0.12)
-  shape.lineTo(0.04, -0.18) // Curled Fingers
+  shape.lineTo(0.04, -0.18)
   shape.lineTo(0.01, -0.19)
   shape.lineTo(-0.03, -0.14)
-  shape.lineTo(-0.04, -0.04) // Thumb base
+  shape.lineTo(-0.04, -0.04)
   shape.closePath()
 
   const extrudeSettings = {
@@ -110,10 +108,10 @@ function createMuscularThighGeometry(): THREE.BufferGeometry {
   const points: THREE.Vector2[] = [
     new THREE.Vector2(0.19, 0.28),
     new THREE.Vector2(0.22, 0.18),
-    new THREE.Vector2(0.235, 0.05), // Quad Peak Swell
+    new THREE.Vector2(0.235, 0.05),
     new THREE.Vector2(0.21, -0.12),
     new THREE.Vector2(0.17, -0.22),
-    new THREE.Vector2(0.135, -0.28), // Knee Joint Pinch
+    new THREE.Vector2(0.135, -0.28),
   ]
   const curve = new THREE.SplineCurve(points)
   const geom = new THREE.LatheGeometry(curve.getPoints(28), 64)
@@ -124,11 +122,11 @@ function createMuscularThighGeometry(): THREE.BufferGeometry {
 function createSculptedCalfGeometry(): THREE.BufferGeometry {
   const points: THREE.Vector2[] = [
     new THREE.Vector2(0.135, 0.26),
-    new THREE.Vector2(0.165, 0.14), // Calf Muscle Belly
+    new THREE.Vector2(0.165, 0.14),
     new THREE.Vector2(0.145, 0.02),
     new THREE.Vector2(0.11, -0.12),
     new THREE.Vector2(0.08, -0.22),
-    new THREE.Vector2(0.07, -0.26), // Slender Ankle
+    new THREE.Vector2(0.07, -0.26),
   ]
   const curve = new THREE.SplineCurve(points)
   const geom = new THREE.LatheGeometry(curve.getPoints(28), 64)
@@ -141,10 +139,10 @@ function createFootGeometry(): THREE.BufferGeometry {
   shape.moveTo(0, 0)
   shape.lineTo(0.06, -0.04)
   shape.lineTo(0.09, -0.12)
-  shape.lineTo(0.08, -0.22) // Pointed Toes
+  shape.lineTo(0.08, -0.22)
   shape.lineTo(0.03, -0.24)
   shape.lineTo(-0.04, -0.16)
-  shape.lineTo(-0.06, -0.05) // Heel
+  shape.lineTo(-0.06, -0.05)
   shape.closePath()
 
   const extrudeSettings = {
@@ -227,6 +225,61 @@ function ArticulatedLegChain({
   )
 }
 
+// ─── 3D Glowing Biomechanical Thrust & Angle Vector Arrow ─────────────
+function GlowingThrustVector3D({
+  vectorType,
+  pelvicTiltDeg,
+  bpm
+}: {
+  vectorType: PositionItem['thrustVector']
+  pelvicTiltDeg: number
+  bpm: number
+}) {
+  const arrowRef = useRef<THREE.Group>(null)
+  const ringRef = useRef<THREE.Mesh>(null)
+
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime()
+    const freq = (bpm / 60) * Math.PI * 2
+
+    if (arrowRef.current) {
+      const pulse = 1 + Math.sin(t * freq) * 0.25
+      arrowRef.current.scale.set(1, 1, pulse)
+      arrowRef.current.position.z = Math.sin(t * freq) * 0.12
+    }
+
+    if (ringRef.current) {
+      ringRef.current.rotation.z = t * 2
+      const scale = 1 + Math.sin(t * 6) * 0.2
+      ringRef.current.scale.set(scale, scale, scale)
+    }
+  })
+
+  const tiltRad = (pelvicTiltDeg * Math.PI) / 180
+
+  return (
+    <group position={[0.08, 0.52, 0]} rotation={[-tiltRad * 0.4, 0, 0]}>
+      {/* Dynamic 3D Thrust Arrow Shaft & Cone */}
+      <group ref={arrowRef}>
+        <mesh position={[0, 0, 0.2]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.4, 16]} />
+          <meshBasicMaterial color="#E8A020" transparent opacity={0.85} />
+        </mesh>
+        <mesh position={[0, 0, -0.05]} rotation={[-Math.PI / 2, 0, 0]}>
+          <coneGeometry args={[0.06, 0.15, 16]} />
+          <meshBasicMaterial color="#F43F5E" />
+        </mesh>
+      </group>
+
+      {/* Orbiting Friction Target Ring */}
+      <mesh ref={ringRef}>
+        <ringGeometry args={[0.16, 0.19, 32]} />
+        <meshBasicMaterial color="#E8A020" side={THREE.DoubleSide} transparent opacity={0.7} />
+      </mesh>
+    </group>
+  )
+}
+
 // ─── 3D Anatomical Body Pose Generator ────────────────────────────────
 function ArticulatedAnatomyModel({
   positionData,
@@ -240,7 +293,6 @@ function ArticulatedAnatomyModel({
   const partnerBRef = useRef<THREE.Group>(null)
   const hotspotRef = useRef<THREE.Mesh>(null)
 
-  // Luxury Exhibition Chrome & Obsidian PBR Materials
   const goldMaterial = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
@@ -285,7 +337,6 @@ function ArticulatedAnatomyModel({
   // Classify active pose archetype
   const poseArchetype = useMemo(() => {
     const v = positionData.svgVariant
-    const c = positionData.category
 
     if (v === 'sovereign-squat') {
       return 'SOVEREIGN_SQUAT'
@@ -340,13 +391,16 @@ function ArticulatedAnatomyModel({
 
   return (
     <group ref={rootGroupRef} position={[0, 0, 0]}>
-      {/* ─────────────────────────────────────────────────────────────────
-          POSE 1: POV_LEGS_WRAPPED (Missionary, High-Angle, Piledriver)
-          Partner A caresses inner thighs/hips with full planted legs
-         ───────────────────────────────────────────────────────────────── */}
+      {/* ── 3D Glowing Biomechanical Thrust & Angle Vector Overlay ── */}
+      <GlowingThrustVector3D
+        vectorType={positionData.thrustVector}
+        pelvicTiltDeg={positionData.pelvicTiltDeg}
+        bpm={bpm}
+      />
+
+      {/* ── Pose 1: POV_LEGS_WRAPPED ── */}
       {poseArchetype === 'POV_LEGS_WRAPPED' && (
         <>
-          {/* Partner B (Receiver - Rose Platinum Mannequin) */}
           <group ref={partnerBRef} position={[0, 0.45, -0.3]} rotation={[tiltRad * 0.3, 0, 0]}>
             <group position={[-0.85, 0.25, 0]} rotation={[0, 0, 0.2]}>
               <mesh geometry={headGeom} material={roseMaterial} />
@@ -355,7 +409,6 @@ function ArticulatedAnatomyModel({
             <mesh position={[-0.35, 0.28, 0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
             <mesh position={[-0.35, 0.28, -0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
 
-            {/* Arms embracing Partner A's neck/shoulders */}
             <ArticulatedArmChain
               upperArmGeom={upperArmGeom}
               forearmGeom={forearmGeom}
@@ -377,7 +430,6 @@ function ArticulatedAnatomyModel({
               wristRot={[-0.4, -0.2, 0.5]}
             />
 
-            {/* Legs wrapping tightly around Partner A's waist */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -400,14 +452,12 @@ function ArticulatedAnatomyModel({
             />
           </group>
 
-          {/* Partner A (Initiator - Obsidian Gold Mannequin) with Full Planted Legs */}
           <group ref={partnerARef} position={[0.25, 0.85, 0.32]}>
             <group position={[0.4, 0.95, 0]} rotation={[0, 0, -0.35]}>
               <mesh geometry={headGeom} material={goldMaterial} />
             </group>
             <mesh position={[0.25, 0.55, 0]} rotation={[0, 0, -0.45]} geometry={partnerATorsoGeom} material={goldMaterial} />
 
-            {/* Hands Actively Grasping & Caressing Partner B's Thighs / Hips */}
             <ArticulatedArmChain
               upperArmGeom={upperArmGeom}
               forearmGeom={forearmGeom}
@@ -429,7 +479,6 @@ function ArticulatedAnatomyModel({
               wristRot={[-0.4, -0.2, 0.5]}
             />
 
-            {/* Full Planted Kneeling Legs with Calf & Flexed Foot */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -454,19 +503,15 @@ function ArticulatedAnatomyModel({
         </>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────────
-          POSE 2: SOVEREIGN_SQUAT (👑 Her in Control - Athletic Vertical Drop)
-         ───────────────────────────────────────────────────────────────── */}
+      {/* ── Pose 2: SOVEREIGN_SQUAT ── */}
       {poseArchetype === 'SOVEREIGN_SQUAT' && (
         <>
-          {/* Partner A (Base Reclined with Hands Caressing Ribs/Hips) */}
           <group ref={partnerARef} position={[-0.2, 0.25, 0]}>
             <group position={[-0.75, 0.22, 0]} rotation={[0, 0, 0.15]}>
               <mesh geometry={headGeom} material={goldMaterial} />
             </group>
             <mesh position={[-0.1, 0.15, 0]} rotation={[0, 0, 1.55]} geometry={partnerATorsoGeom} material={goldMaterial} />
 
-            {/* Hands Reaching Up to Caress Partner B's Hips/Waist */}
             <ArticulatedArmChain
               upperArmGeom={upperArmGeom}
               forearmGeom={forearmGeom}
@@ -488,7 +533,6 @@ function ArticulatedAnatomyModel({
               wristRot={[-0.3, -0.1, 0.4]}
             />
 
-            {/* Planted Extended Legs */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -511,7 +555,6 @@ function ArticulatedAnatomyModel({
             />
           </group>
 
-          {/* Partner B (👑 Deep Athletic Squat with Hands Pinned to Partner A Chest) */}
           <group ref={partnerBRef} position={[0.08, 0.95, 0]}>
             <group position={[0.15, 0.95, 0]} rotation={[0, 0, -0.2]}>
               <mesh geometry={headGeom} material={roseMaterial} />
@@ -520,7 +563,6 @@ function ArticulatedAnatomyModel({
             <mesh position={[0.08, 0.62, 0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
             <mesh position={[0.08, 0.62, -0.11]} material={roseMaterial}><sphereGeometry args={[0.13, 24, 24]} /></mesh>
 
-            {/* Hands Firmly Pinned on Partner A's Chest */}
             <ArticulatedArmChain
               upperArmGeom={upperArmGeom}
               forearmGeom={forearmGeom}
@@ -542,7 +584,6 @@ function ArticulatedAnatomyModel({
               wristRot={[-0.4, 0, 0]}
             />
 
-            {/* Deep Athletic Squatting Legs */}
             <ArticulatedLegChain
               thighGeom={thighGeom}
               calfGeom={calfGeom}
@@ -567,9 +608,7 @@ function ArticulatedAnatomyModel({
         </>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────────
-          POSE 3: PRONE_ARCH (Modified Prone Bone, Obsidian Clamp)
-         ───────────────────────────────────────────────────────────────── */}
+      {/* ── Pose 3: PRONE_ARCH ── */}
       {poseArchetype === 'PRONE_ARCH' && (
         <>
           <group ref={partnerBRef} position={[0, 0.35, 0]}>
@@ -627,7 +666,6 @@ function ArticulatedAnatomyModel({
             </group>
             <mesh position={[-0.1, 0.45, 0]} rotation={[0, 0, -0.2]} geometry={partnerATorsoGeom} material={goldMaterial} />
 
-            {/* Hands Firmly Gripping Partner B's Hips */}
             <ArticulatedArmChain
               upperArmGeom={upperArmGeom}
               forearmGeom={forearmGeom}
@@ -673,9 +711,7 @@ function ArticulatedAnatomyModel({
         </>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────────
-          POSE 4: STRADDLE_COWGIRL (👑 Her in Control - Reverse Cowgirl)
-         ───────────────────────────────────────────────────────────────── */}
+      {/* ── Pose 4: STRADDLE_COWGIRL ── */}
       {poseArchetype === 'STRADDLE_COWGIRL' && (
         <>
           <group ref={partnerARef} position={[-0.3, 0.3, 0]}>
@@ -684,7 +720,6 @@ function ArticulatedAnatomyModel({
             </group>
             <mesh position={[-0.1, 0.15, 0]} rotation={[0, 0, 1.55]} geometry={partnerATorsoGeom} material={goldMaterial} />
 
-            {/* Hands Caressing Receiver Glutes/Thighs */}
             <ArticulatedArmChain
               upperArmGeom={upperArmGeom}
               forearmGeom={forearmGeom}
@@ -781,9 +816,7 @@ function ArticulatedAnatomyModel({
         </>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────────
-          POSE 5: STANDING_LIFT (Wall Pin, Counter Press, Desk Empress)
-         ───────────────────────────────────────────────────────────────── */}
+      {/* ── Pose 5: STANDING_LIFT ── */}
       {poseArchetype === 'STANDING_LIFT' && (
         <>
           <mesh position={[-0.6, 1.1, 0]}>
@@ -893,9 +926,7 @@ function ArticulatedAnatomyModel({
         </>
       )}
 
-      {/* ─────────────────────────────────────────────────────────────────
-          POSE 6: SEATED_LOTUS (Lotus Commander, Cat Straddle, Spoon)
-         ───────────────────────────────────────────────────────────────── */}
+      {/* ── Pose 6: SEATED_LOTUS ── */}
       {poseArchetype === 'SEATED_LOTUS' && (
         <>
           <group ref={partnerBRef} position={[-0.2, 0.65, 0]}>

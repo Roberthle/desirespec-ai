@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { motion, AnimatePresence } from 'framer-motion'
 import { POSITIONS_DATA, PositionItem } from '../lib/positionsData'
+import BiomechanicalHUD from './BiomechanicalHUD'
 
 // Dynamically import Three.js WebGL Viewport with SSR disabled to prevent hydration mismatch
 const ThreePositionViewport = dynamic(() => import('./ThreePositionViewport'), {
@@ -427,6 +428,12 @@ export default function PositionLab() {
             positionData={selectedPosition}
             bpm={cadenceBpm}
             povPreset={povPreset}
+          />
+
+          {/* Biomechanical Depth & Angle Vector HUD */}
+          <BiomechanicalHUD
+            positionData={selectedPosition}
+            bpm={cadenceBpm}
           />
 
           {/* Metrics & Physics Badges */}
