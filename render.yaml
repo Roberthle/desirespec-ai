@@ -3,17 +3,11 @@ services:
     name: desirespec-ai
     runtime: node
     region: oregon
-    plan: starter
+    plan: free
     buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DB_PATH
-        value: /data/desirespec.db
-    disk:
-      name: desirespec-data
-      mountPath: /data
-      sizeGB: 1
     healthCheckPath: /
     autoDeploy: false
