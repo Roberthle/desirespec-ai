@@ -31,6 +31,8 @@ type Tab =
   | 'positions'
 
 const tabs: { id: Tab; label: string; icon: string }[] = [
+  { id: 'livesync',    label: '🔥 Live Sync',  icon: '🔥' },
+  { id: 'positions',   label: '⚡ Positions',  icon: '⚡' },
   { id: 'heatmap',     label: 'Touch Map',     icon: '◉' },
   { id: 'diagnostics', label: 'Desire Profile', icon: '◈' },
   { id: 'escalation',  label: 'Escalation',    icon: '◆' },
@@ -41,8 +43,6 @@ const tabs: { id: Tab; label: string; icon: string }[] = [
   { id: 'gallery',     label: 'Art Gallery',   icon: '◻' },
   { id: 'sandbox',     label: 'Sandbox',       icon: '◇' },
   { id: 'pacer',       label: 'Pacer',         icon: '○' },
-  { id: 'livesync',    label: '🔥 Live Sync',  icon: '🔥' },
-  { id: 'positions',   label: '⚡ Positions',  icon: '⚡' },
 ]
 
 export default function Home() {
