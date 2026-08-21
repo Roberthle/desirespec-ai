@@ -22,6 +22,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
     {
+      url: `${baseUrl}/guides/reclaiming-intimacy-after-ptsd-and-cptsd`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
+    {
       url: `${baseUrl}/guides/healing-intimacy-blocks-and-body-freezing`,
       lastModified: currentDate,
       changeFrequency: 'weekly',

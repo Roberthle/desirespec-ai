@@ -323,4 +323,49 @@ export const SOLUTIONS_DATA: SolutionItem[] = [
       },
     ],
   },
+  {
+    id: 'trauma-cptsd',
+    slug: 'intimacy-reclamation-for-trauma-and-cptsd',
+    title: 'Intimacy Reclamation for Survivors of PTSD, CPTSD & Trauma',
+    shortTitle: 'PTSD & Trauma Reclamation',
+    tagline: 'Gentle, somatic protocols for survivors who have stopped trying. Reclaim physical safety and emotional connection without triggers.',
+    metaDescription: 'Trauma-informed intimacy guide for PTSD and CPTSD survivors. Step-by-step somatic safety checks, gentle unpinned positions, and boundary renegotiation.',
+    primaryKeywords: [
+      'intimacy with CPTSD',
+      'how to enjoy intimacy after sexual trauma',
+      'partner has PTSD how to be intimate',
+      'why does touch make me panic',
+      'trauma informed intimacy exercises',
+    ],
+    recommendedPositionIds: ['lazy-sunday', 'sovereign-squat', 'lotus-lock'],
+    painPoints: [
+      'Involuntary physical freeze or panic response triggered by touch or darkness',
+      'Feeling guilty for stopping or feeling unable to meet a partner’s desires',
+      'Feeling physically trapped or overpowered under heavy body weight',
+    ],
+    hacksAndAdjustments: [
+      {
+        title: 'Zero Pinned Weight / Unilateral Exit Control',
+        description: 'Only use positions where the survivor is never pinned down. Positions like The Sovereign Squat give the survivor 100% control over depth, speed, and immediate disengagement.',
+      },
+      {
+        title: 'Amber Low-Light & Ambient Sensory Grounding',
+        description: 'Avoid total darkness which triggers threat vigilance. Keep warm dim lights on and place a grounding object (like a textured blanket or cool glass of water) within arm’s reach.',
+      },
+      {
+        title: 'The "Stop Means Hug" Agreement',
+        description: 'If a trigger occurs, the immediate response is zero frustration and an immediate comforting embrace: "I am right here with you. You are completely safe."',
+      },
+    ],
+    faqs: [
+      {
+        question: 'How can a partner support someone with CPTSD during intimacy?',
+        answer: 'Prioritize patience and verbal check-ins. If your partner freezes or pulls away, stop immediately, maintain loving eye contact, and remind them they are in control with zero pressure.',
+      },
+      {
+        question: 'What is the best position for someone with trauma triggers?',
+        answer: 'The Sovereign Squat (where the survivor is on top and controls all movement) and The Lazy Sunday (Side-by-Side Spooning, which has zero pinned bodyweight).',
+      },
+    ],
+  },
 ]
