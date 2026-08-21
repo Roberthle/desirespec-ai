@@ -2,15 +2,16 @@
   "name": "desirespec-ai",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "seed": "node -e \"require('./lib/seed.js')\""
+    "lint": "next lint"
   },
   "dependencies": {
-    "better-sqlite3": "^11.1.2",
     "framer-motion": "^11.3.0",
     "idb": "^8.0.0",
     "lucide-react": "^0.408.0",
@@ -21,7 +22,6 @@
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.11",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18",
