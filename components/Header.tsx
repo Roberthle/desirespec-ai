@@ -14,6 +14,7 @@ type Tab =
   | 'sandbox'
   | 'pacer'
   | 'livesync'
+  | 'positions'
 
 interface HeaderProps {
   activeTab: Tab

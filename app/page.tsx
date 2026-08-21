@@ -14,6 +14,7 @@ import SensualGallery from '../components/SensualGallery'
 import FantasySandbox from '../components/FantasySandbox'
 import BreathPacer from '../components/BreathPacer'
 import LiveCouplesGame from '../components/LiveCouplesGame'
+import PositionLab from '../components/PositionLab'
 
 type Tab =
   | 'heatmap'
@@ -27,6 +28,7 @@ type Tab =
   | 'sandbox'
   | 'pacer'
   | 'livesync'
+  | 'positions'
 
 const tabs: { id: Tab; label: string; icon: string }[] = [
   { id: 'heatmap',     label: 'Touch Map',     icon: '◉' },
@@ -40,6 +42,7 @@ const tabs: { id: Tab; label: string; icon: string }[] = [
   { id: 'sandbox',     label: 'Sandbox',       icon: '◇' },
   { id: 'pacer',       label: 'Pacer',         icon: '○' },
   { id: 'livesync',    label: '🔥 Live Sync',  icon: '🔥' },
+  { id: 'positions',   label: '⚡ Positions',  icon: '⚡' },
 ]
 
 export default function Home() {
@@ -94,6 +97,7 @@ export default function Home() {
             {activeTab === 'sandbox'     && <FantasySandbox />}
             {activeTab === 'pacer'       && <BreathPacer />}
             {activeTab === 'livesync'    && <LiveCouplesGame />}
+            {activeTab === 'positions'   && <PositionLab />}
           </motion.div>
         </AnimatePresence>
       </main>
