@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { saveMoodPreset, getMoodPresets, deleteMoodPreset, type MoodPreset } from '@/lib/storage'
+import { saveMoodPreset, getMoodPresets, deleteMoodPreset, type MoodPreset } from '../lib/storage'
 
 // ─── Soundscape options ───────────────────────────────────────────────
 

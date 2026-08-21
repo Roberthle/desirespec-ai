@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { saveCouplesSync, type CouplesSyncData } from '@/lib/storage'
+import { saveCouplesSync, type CouplesSyncData } from '../lib/storage'
 
 // ─── Checklist items ──────────────────────────────────────────────────
 

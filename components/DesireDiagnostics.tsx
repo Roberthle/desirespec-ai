@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { saveDiagnosticsResult, type DiagnosticsResult } from '@/lib/storage'
+import { saveDiagnosticsResult, type DiagnosticsResult } from '../lib/storage'
 
 // ─── Dual Control Model quiz ──────────────────────────────────────────
 
