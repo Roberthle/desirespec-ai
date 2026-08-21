@@ -70,3 +70,34 @@ body {
   background: currentColor;
   animation: heatPulse 2s ease-out infinite;
 }
+
+/* 3D Anatomical Rhythmic Cadence Keyframes */
+@keyframes plungeLinear {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(6px, -4px); }
+}
+
+@keyframes rotationalRoll {
+  0% { transform: rotate(0deg) translate(0, 0); }
+  25% { transform: rotate(1.5deg) translate(2px, -2px); }
+  50% { transform: rotate(0deg) translate(4px, 0); }
+  75% { transform: rotate(-1.5deg) translate(2px, 2px); }
+  100% { transform: rotate(0deg) translate(0, 0); }
+}
+
+@keyframes shallowFlutter {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(2px, -1px); }
+}
+
+.rhythm-plunge {
+  animation: plungeLinear 2.2s ease-in-out infinite;
+}
+
+.rhythm-grind {
+  animation: rotationalRoll 3.5s ease-in-out infinite;
+}
+
+.rhythm-flutter {
+  animation: shallowFlutter 0.8s ease-in-out infinite;
+}
