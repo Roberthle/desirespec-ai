@@ -1,4 +1,5 @@
 import { POSITIONS_DATA } from '../lib/positionsData'
+import { SOLUTIONS_DATA } from '../lib/solutionsData'
 
 const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/indexnow'
 const HOST = 'desirespec-ai.onrender.com'
@@ -6,11 +7,12 @@ const KEY = 'desirespec-ai-indexnow-key'
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`
 
 async function submitToIndexNow() {
-  console.log('⚡ Submitting DesireSpec AI URL Catalog to IndexNow Search Engines...')
+  console.log('⚡ Submitting DesireSpec AI High-Volume URL Catalog to IndexNow Search Engines...')
 
   const urlList = [
     `https://${HOST}/`,
     `https://${HOST}/guides/pelvic-tilt-biomechanics`,
+    ...SOLUTIONS_DATA.map((s) => `https://${HOST}/solutions/${s.slug}`),
     ...POSITIONS_DATA.map((p) => `https://${HOST}/positions/${p.id}`),
   ]
 
@@ -29,7 +31,7 @@ async function submitToIndexNow() {
     })
 
     console.log(`✅ IndexNow Response Status: ${response.status} (${response.statusText})`)
-    console.log(`🎯 Successfully submitted ${urlList.length} URLs for instant search indexing.`)
+    console.log(`🎯 Successfully submitted ${urlList.length} high-intent URLs for instant search indexing.`)
   } catch (err) {
     console.error('❌ Error submitting to IndexNow:', err)
   }
