@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { POSITIONS_DATA, PositionItem } from '../lib/positionsData'
 
-// ─── High-Definition Volumetric 3D Anatomical Body Renderer ────────────
+// ─── 26-Position Volumetric 3D Anatomical Renderer ───────────────────
 function Volumetric3DPositionCanvas({
   variant,
   viewPerspective,
@@ -96,318 +96,104 @@ function Volumetric3DPositionCanvas({
           </filter>
         </defs>
 
-        {/* ── 1. ARCH & ANCHOR (Volumetric Modified Prone Bone) ──────── */}
-        {variant === 'arch-anchor' && (
-          <g className={rhythmClass}>
-            {/* Elevated Bed / Wedge Surface */}
-            <path d="M 30 250 L 430 250" stroke="rgba(245,232,200,0.15)" strokeWidth="2" />
-            <polygon points="120,250 240,210 240,250" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.25)" strokeWidth="1.5" />
+        <g className={rhythmClass}>
+          {/* Surface Baseline */}
+          <path d="M 30 250 L 430 250" stroke="rgba(245,232,200,0.15)" strokeWidth="2" />
 
-            {/* Partner B (Receiver - Full-Flesh Rose Body) Prone Elevated */}
+          {/* Render Volumetric Poses Based on Position Variant */}
+          {/* Category 1: Deep Power & Pelvic Tilt */}
+          {(variant === 'arch-anchor' || variant === 'obsidian-clamp' || variant === 'velvet-hammock' || variant === 'prone-guillotine') && (
             <g filter="url(#volumetricDrop)">
-              {/* Back Arm Rest */}
-              <path d="M 65 240 C 50 235, 45 220, 60 215 C 80 210, 110 230, 120 245 Z" fill="url(#roseMuscleShadow)" opacity="0.6" />
-
-              {/* Head & Neck resting on mattress */}
+              {/* Partner B: Prone Body */}
               <ellipse cx="60" cy="225" rx="14" ry="18" fill="url(#roseSkinGrad)" transform="rotate(-20 60 225)" />
               <path d="M 68 230 C 85 235, 110 235, 130 225 L 125 242 C 105 246, 80 244, 68 230 Z" fill="url(#roseSkinGrad)" />
-
-              {/* Torso, Ribcage & Arched Back Contour */}
               <path d="M 125 228 C 145 210, 175 190, 205 185 C 230 180, 255 195, 260 215 C 255 240, 215 248, 175 246 C 145 245, 130 240, 125 228 Z" fill="url(#roseSkinGrad)" />
-
-              {/* Voluptuous Glute Mass Elevated at 35° */}
               <ellipse cx="230" cy="195" rx="28" ry="24" fill="url(#roseSkinGrad)" transform="rotate(-15 230 195)" />
-              <ellipse cx="232" cy="193" rx="24" ry="18" fill="url(#roseRimLight)" opacity="0.4" />
-
-              {/* Full Thighs & Extended Pressed Legs */}
               <path d="M 245 195 C 275 205, 320 225, 380 245 C 385 249, 380 252, 365 252 C 310 250, 265 235, 235 215 Z" fill="url(#roseSkinGrad)" />
-              <path d="M 255 205 C 290 220, 340 240, 395 248 C 390 252, 360 255, 310 248 Z" fill="url(#roseMuscleShadow)" opacity="0.5" />
-            </g>
 
-            {/* Partner A (Initiator - Volumetric Muscular Amber/Gold Body) */}
-            <g filter="url(#volumetricDrop)">
-              {/* Back Leg (Occluded) */}
-              <path d="M 250 205 C 240 230, 230 245, 220 250 L 205 250 C 220 235, 235 215, 245 195 Z" fill="url(#goldMuscleShadow)" opacity="0.7" />
-
-              {/* Head & Trapezius */}
+              {/* Partner A: Mounted Over */}
               <ellipse cx="170" cy="95" rx="16" ry="20" fill="url(#goldSkinGrad)" transform="rotate(15 170 95)" />
-              <path d="M 175 110 C 190 120, 210 130, 225 145 C 205 155, 185 140, 165 125 Z" fill="url(#goldSkinGrad)" />
-
-              {/* Muscular Torso, Broad Shoulders & Core */}
               <path d="M 160 115 C 190 120, 225 135, 245 160 C 255 175, 250 200, 240 210 C 220 215, 195 190, 180 160 C 165 135, 155 125, 160 115 Z" fill="url(#goldSkinGrad)" />
-
-              {/* Arm Firmly Gripping Partner B Hip/Back */}
               <path d="M 180 135 C 195 165, 210 185, 220 195 C 215 202, 205 198, 195 180 C 185 160, 170 145, 175 135 Z" fill="url(#goldSkinGrad)" />
               <ellipse cx="220" cy="195" rx="7" ry="5" fill="#FDE68A" />
-
-              {/* Powerful Thighs Straddling Tight Base */}
               <path d="M 245 165 C 265 175, 275 200, 270 225 C 265 240, 250 250, 240 250 C 242 235, 255 215, 245 195 Z" fill="url(#goldSkinGrad)" />
-              <path d="M 195 130 C 215 145, 235 165, 240 180" stroke="url(#goldRimLight)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
             </g>
+          )}
 
-            {/* Glowing Thrust Vector & Internal Anterior Target Hotspot */}
-            <g filter="url(#hotspotPulseGlow)">
-              <line x1="270" y1="165" x2="232" y2="196" stroke="#F59E0B" strokeWidth="3.5" strokeDasharray="4 3" strokeLinecap="round" />
-              <polygon points="230,198 240,192 236,203" fill="#F59E0B" />
-              <circle cx="230" cy="198" r="9" fill="#EC4899" className="animate-ping opacity-85" />
-              <circle cx="230" cy="198" r="4.5" fill="#FFFFFF" />
-            </g>
-          </g>
-        )}
-
-        {/* ── 2. STANDING COUNTER PRESS (Volumetric Standing Leverage) ── */}
-        {variant === 'counter-press' && (
-          <g className={rhythmClass}>
-            {/* Counter Structure */}
-            <rect x="70" y="165" width="160" height="15" fill="#18140C" stroke="rgba(245,232,200,0.3)" strokeWidth="1.5" />
-            <rect x="140" y="180" width="20" height="90" fill="#120F09" stroke="rgba(245,232,200,0.15)" strokeWidth="1" />
-
-            {/* Partner B (Receiver - Full Rose Body) Seated on Counter */}
+          {/* Elevated Suspensions & Inversions */}
+          {(variant === 'high-angle' || variant === 'piledriver' || variant === 'anvil-press') && (
             <g filter="url(#volumetricDrop)">
-              {/* Head tilted back */}
-              <ellipse cx="145" cy="70" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(-15 145 70)" />
-
-              {/* Upright Arched Torso & Full Bust */}
-              <path d="M 142 85 C 130 115, 130 145, 138 170 C 158 172, 175 160, 168 135 C 165 110, 158 90, 142 85 Z" fill="url(#roseSkinGrad)" />
-              {/* Voluptuous Bust Contour */}
-              <circle cx="160" cy="115" r="10" fill="url(#roseSkinGrad)" opacity="0.9" />
-
-              {/* Legs Wrapped High Around Partner A Waist */}
-              <path d="M 145 165 C 175 155, 215 145, 255 125 C 265 130, 255 145, 220 160 C 185 172, 155 175, 145 165 Z" fill="url(#roseSkinGrad)" />
-
-              {/* Arms Embracing Neck */}
-              <path d="M 148 100 C 175 95, 205 90, 225 100 C 220 108, 195 108, 155 112 Z" fill="url(#roseSkinGrad)" />
-            </g>
-
-            {/* Partner A (Initiator - Muscular Gold Standing Body) */}
-            <g filter="url(#volumetricDrop)">
-              {/* Head & Neck leaning in close */}
-              <ellipse cx="230" cy="90" rx="16" ry="19" fill="url(#goldSkinGrad)" transform="rotate(20 230 90)" />
-
-              {/* Broad Muscular Torso & Glutes */}
-              <path d="M 225 105 C 215 135, 210 165, 200 195 C 225 195, 245 170, 250 140 C 255 115, 245 105, 225 105 Z" fill="url(#goldSkinGrad)" />
-
-              {/* Strong Arms Lifting Under Thighs */}
-              <path d="M 230 125 C 205 140, 175 160, 155 162 C 158 172, 185 165, 215 150 Z" fill="url(#goldSkinGrad)" />
-
-              {/* Solid Grounded Legs */}
-              <path d="M 200 195 C 210 225, 225 255, 235 270 C 248 268, 240 235, 228 200 Z" fill="url(#goldSkinGrad)" />
-              <path d="M 220 120 C 210 150, 205 180, 200 200" stroke="url(#goldRimLight)" strokeWidth="2.5" fill="none" />
-            </g>
-
-            {/* Hotspot & Downward Vector */}
-            <g filter="url(#hotspotPulseGlow)">
-              <line x1="210" y1="155" x2="175" y2="168" stroke="#F59E0B" strokeWidth="3.5" strokeDasharray="3 3" />
-              <circle cx="178" cy="166" r="9" fill="#EC4899" className="animate-ping opacity-85" />
-              <circle cx="178" cy="166" r="4.5" fill="#FFFFFF" />
-            </g>
-          </g>
-        )}
-
-        {/* ── 3. VELVET TRAP (Volumetric Inverted CAT) ──────────────── */}
-        {variant === 'velvet-trap' && (
-          <g className={rhythmClass}>
-            <line x1="40" y1="230" x2="420" y2="230" stroke="rgba(245,232,200,0.15)" strokeWidth="2" />
-
-            {/* Partner B (Receiver - Rose Reclined Full Body) */}
-            <g filter="url(#volumetricDrop)">
-              <ellipse cx="80" cy="210" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(-30 80 210)" />
-              {/* Reclined Torso */}
-              <path d="M 90 215 C 135 220, 180 215, 220 205 C 245 190, 275 165, 305 140 C 315 145, 285 180, 255 208 C 220 225, 140 230, 90 215 Z" fill="url(#roseSkinGrad)" />
-              {/* Elevated Hips & Legs Wrapped */}
-              <ellipse cx="235" cy="205" rx="22" ry="16" fill="url(#roseSkinGrad)" />
-            </g>
-
-            {/* Partner A (Initiator - Gold Mounted Full-Flesh Press) */}
-            <g filter="url(#volumetricDrop)">
-              <ellipse cx="120" cy="165" rx="16" ry="19" fill="url(#goldSkinGrad)" transform="rotate(10 120 165)" />
-              {/* Full Torso hovering locked in contact with zero gap */}
-              <path d="M 130 175 C 170 180, 210 188, 250 195 C 275 205, 310 215, 350 225 C 345 232, 295 225, 255 212 C 205 200, 155 190, 130 175 Z" fill="url(#goldSkinGrad)" />
-              <ellipse cx="250" cy="195" rx="24" ry="18" fill="url(#goldSkinGrad)" />
-              <path d="M 140 180 C 180 188, 220 195, 260 202" stroke="url(#goldRimLight)" strokeWidth="2.5" fill="none" />
-            </g>
-
-            {/* Clitoral & G-Spot Double Grinding Hotspot */}
-            <g filter="url(#hotspotPulseGlow)">
-              <ellipse cx="240" cy="200" rx="12" ry="7" fill="#EC4899" className="animate-pulse" />
-              <circle cx="240" cy="200" r="4.5" fill="#FFFFFF" />
-              {/* Orbiting Friction Indicator */}
-              <circle cx="240" cy="200" r="20" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="4 3" />
-            </g>
-          </g>
-        )}
-
-        {/* ── 4. HIGH-ANGLE SUSPENSION (Volumetric Vertical Inversion) ─ */}
-        {variant === 'high-angle' && (
-          <g className={rhythmClass}>
-            <line x1="30" y1="250" x2="430" y2="250" stroke="rgba(245,232,200,0.15)" strokeWidth="2" />
-
-            {/* Partner B (Receiver - Rose Body Inverted 60°) */}
-            <g filter="url(#volumetricDrop)">
+              {/* Partner B: Inverted Pelvis Fold */}
               <ellipse cx="75" cy="235" rx="14" ry="17" fill="url(#roseSkinGrad)" />
-              {/* Back Flat on Mattress */}
               <path d="M 85 240 C 130 242, 175 235, 215 210 C 235 195, 245 170, 250 140 L 265 145 C 255 185, 240 215, 215 240 Z" fill="url(#roseSkinGrad)" />
-              {/* Full Volumetric Legs Elevated Over Shoulders at 60 deg */}
               <path d="M 220 205 C 230 160, 250 100, 280 60 C 292 65, 270 120, 245 190 Z" fill="url(#roseSkinGrad)" />
               <ellipse cx="280" cy="60" rx="10" ry="14" fill="url(#roseSkinGrad)" />
-            </g>
 
-            {/* Partner A (Initiator - Gold Kneeling Deep Plunge) */}
-            <g filter="url(#volumetricDrop)">
+              {/* Partner A: Standing/Kneeling Plunge */}
               <ellipse cx="300" cy="80" rx="16" ry="19" fill="url(#goldSkinGrad)" transform="rotate(-15 300 80)" />
-              {/* Broad Vertical Torso */}
               <path d="M 290 95 C 275 135, 260 175, 250 215 C 270 218, 295 195, 310 160 C 320 125, 310 100, 290 95 Z" fill="url(#goldSkinGrad)" />
-              {/* Kneeling Base Legs */}
               <path d="M 250 215 C 270 235, 295 248, 325 250 C 330 245, 315 225, 285 205 Z" fill="url(#goldSkinGrad)" />
             </g>
+          )}
 
-            {/* Deep Vertical Plunge Hotspot */}
-            <g filter="url(#hotspotPulseGlow)">
-              <line x1="270" y1="180" x2="230" y2="215" stroke="#F59E0B" strokeWidth="3.5" strokeDasharray="3 3" />
-              <circle cx="232" cy="212" r="10" fill="#EC4899" className="animate-ping opacity-90" />
-              <circle cx="232" cy="212" r="5" fill="#FFFFFF" />
-            </g>
-          </g>
-        )}
-
-        {/* ── 5. OVERDRIVE COWGIRL (Volumetric 45° Straddle) ────────── */}
-        {variant === 'overdrive-cowgirl' && (
-          <g className={rhythmClass}>
-            <line x1="30" y1="250" x2="430" y2="250" stroke="rgba(245,232,200,0.15)" strokeWidth="2" />
-
-            {/* Partner A (Base/Reclined Gold Body) */}
+          {/* Standing & Vertical Wall Poses */}
+          {(variant === 'wall-pin' || variant === 'counter-press' || variant === 'standing-helix' || variant === 'suspended-lotus' || variant === 'desk-commander' || variant === 'cross-axis') && (
             <g filter="url(#volumetricDrop)">
-              <ellipse cx="70" cy="230" rx="15" ry="18" fill="url(#goldSkinGrad)" transform="rotate(-25 70 230)" />
-              <path d="M 80 235 L 350 240 C 350 248, 300 252, 80 250 Z" fill="url(#goldSkinGrad)" />
-              {/* Bent Knees */}
-              <ellipse cx="280" cy="230" rx="20" ry="14" fill="url(#goldMuscleShadow)" opacity="0.6" />
-            </g>
+              {/* Vertical Wall/Counter Backing */}
+              <rect x="75" y="20" width="18" height="260" fill="#18140E" stroke="rgba(245,232,200,0.3)" strokeWidth="2" />
 
-            {/* Partner B (Straddling Top Rose Body - Arched 45° Lean-Back) */}
-            <g filter="url(#volumetricDrop)">
-              <ellipse cx="295" cy="75" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(25 295 75)" />
-              {/* Arched Torso & Full Bust */}
-              <path d="M 285 85 C 255 125, 220 165, 205 210 C 225 215, 255 190, 280 145 C 295 115, 305 90, 285 85 Z" fill="url(#roseSkinGrad)" />
-              <circle cx="270" cy="115" r="11" fill="url(#roseSkinGrad)" />
-
-              {/* Arms supporting behind on partner thighs */}
-              <path d="M 270 120 C 285 160, 300 200, 310 235 C 318 234, 310 195, 290 150 Z" fill="url(#roseSkinGrad)" />
-
-              {/* Straddling Thighs & Rounded Glutes */}
-              <ellipse cx="210" cy="210" rx="24" ry="18" fill="url(#roseSkinGrad)" transform="rotate(-10 210 210)" />
-              <path d="M 285 95 C 260 135, 230 175, 210 210" stroke="url(#roseRimLight)" strokeWidth="2.5" fill="none" />
-            </g>
-
-            {/* Anterior G-Spot Vector Angle Hotspot */}
-            <g filter="url(#hotspotPulseGlow)">
-              <circle cx="215" cy="215" r="9" fill="#EC4899" className="animate-ping opacity-90" />
-              <circle cx="215" cy="215" r="4.5" fill="#FFFFFF" />
-              <circle cx="215" cy="215" r="22" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="4 3" />
-            </g>
-          </g>
-        )}
-
-        {/* ── 6. OBSIDIAN LOCK (Volumetric Side-Lying Spoons) ───────── */}
-        {variant === 'obsidian-lock' && (
-          <g className={rhythmClass}>
-            <line x1="30" y1="240" x2="430" y2="240" stroke="rgba(245,232,200,0.15)" strokeWidth="2" />
-
-            {/* Partner B (Receiver Front Rose Body) */}
-            <g filter="url(#volumetricDrop)">
-              <ellipse cx="110" cy="180" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(-15 110 180)" />
-              {/* Torso & Hip Curve */}
-              <path d="M 120 190 C 165 185, 210 188, 255 190 C 275 145, 315 125, 345 145 C 330 170, 290 195, 260 215 C 215 220, 165 215, 120 190 Z" fill="url(#roseSkinGrad)" />
-              {/* Full Glutes */}
-              <ellipse cx="250" cy="190" rx="24" ry="18" fill="url(#roseSkinGrad)" />
-            </g>
-
-            {/* Partner A (Initiator Behind Gold Body - Contoured to Back) */}
-            <g filter="url(#volumetricDrop)">
-              <ellipse cx="85" cy="165" rx="15" ry="18" fill="url(#goldSkinGrad)" transform="rotate(-10 85 165)" />
-              {/* Muscular Back & Torso */}
-              <path d="M 95 175 C 140 170, 185 175, 230 182 C 265 192, 305 208, 350 225 C 340 235, 290 215, 245 198 C 195 190, 145 185, 95 175 Z" fill="url(#goldSkinGrad)" />
-              {/* Reaching Arm for Multi-Zone Caress */}
-              <path d="M 115 180 C 155 165, 195 165, 230 175 C 225 182, 190 175, 135 190 Z" fill="url(#goldSkinGrad)" />
-              <path d="M 100 175 C 145 170, 190 175, 235 185" stroke="url(#goldRimLight)" strokeWidth="2.5" fill="none" />
-            </g>
-
-            {/* Dual Multi-Touch Hotspot */}
-            <g filter="url(#hotspotPulseGlow)">
-              <circle cx="245" cy="188" r="8" fill="#F59E0B" className="animate-pulse" />
-              <circle cx="245" cy="188" r="4" fill="#FFF" />
-            </g>
-          </g>
-        )}
-
-        {/* ── 7. WALL PIN (Volumetric Elevated Standing Lift) ───────── */}
-        {variant === 'wall-pin' && (
-          <g className={rhythmClass}>
-            {/* Vertical Textured Wall */}
-            <rect x="80" y="20" width="18" height="260" fill="#18140E" stroke="rgba(245,232,200,0.3)" strokeWidth="2" />
-
-            {/* Partner B (Receiver - Rose Body Pinned & Hoisted) */}
-            <g filter="url(#volumetricDrop)">
+              {/* Partner B: Elevated Hoisted Body */}
               <ellipse cx="125" cy="70" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(-10 125 70)" />
-              {/* Back Flat to Wall */}
               <path d="M 115 85 C 118 125, 115 155, 125 190 C 155 170, 195 155, 225 145 C 215 165, 175 185, 135 205 C 115 205, 110 160, 115 85 Z" fill="url(#roseSkinGrad)" />
               <circle cx="140" cy="115" r="10" fill="url(#roseSkinGrad)" />
               <ellipse cx="130" cy="190" rx="20" ry="16" fill="url(#roseSkinGrad)" />
-            </g>
 
-            {/* Partner A (Initiator - Powerful Muscular Gold Standing Body) */}
-            <g filter="url(#volumetricDrop)">
+              {/* Partner A: Grounded Power Stance */}
               <ellipse cx="215" cy="80" rx="16" ry="19" fill="url(#goldSkinGrad)" transform="rotate(25 215 80)" />
-              {/* Muscular Torso & Glutes */}
               <path d="M 210 95 C 200 135, 190 175, 175 205 C 200 205, 225 175, 235 140 C 240 110, 230 95, 210 95 Z" fill="url(#goldSkinGrad)" />
-              {/* Heavy Lifting Arms Under Partner B Thighs */}
               <path d="M 200 120 C 165 145, 145 175, 130 195 C 135 202, 160 185, 190 155 Z" fill="url(#goldSkinGrad)" />
-              {/* Planted Power Legs */}
               <path d="M 175 205 C 185 235, 205 265, 215 275 C 228 272, 215 240, 200 210 Z" fill="url(#goldSkinGrad)" />
             </g>
+          )}
 
-            {/* Maximum Power Hotspot */}
-            <g filter="url(#hotspotPulseGlow)">
-              <line x1="185" y1="195" x2="140" y2="190" stroke="#F59E0B" strokeWidth="3.5" strokeDasharray="3 3" />
-              <circle cx="145" cy="190" r="10" fill="#D97706" className="animate-ping opacity-90" />
-              <circle cx="145" cy="190" r="5" fill="#FFFFFF" />
-            </g>
-          </g>
-        )}
-
-        {/* ── 8. SUBMISSION BRIDGE (Volumetric High Pelvic Arch) ─────── */}
-        {variant === 'submission-bridge' && (
-          <g className={rhythmClass}>
-            <line x1="30" y1="250" x2="430" y2="250" stroke="rgba(245,232,200,0.15)" strokeWidth="2" />
-
-            {/* Partner B (Receiver - Rose Elevated Bridge with Pinned Wrists) */}
+          {/* Straddles, Cowgirls & Dominance */}
+          {(variant === 'overdrive-cowgirl' || variant === 'amazon-straddle' || variant === 'sovereign-squat' || variant === 'gspot-throne') && (
             <g filter="url(#volumetricDrop)">
-              {/* Pinned Wrists Over Head */}
-              <circle cx="65" cy="235" r="7" fill="#BE185D" />
-              <ellipse cx="105" cy="230" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(-25 105 230)" />
+              {/* Partner A: Base Reclined Body */}
+              <ellipse cx="70" cy="230" rx="15" ry="18" fill="url(#goldSkinGrad)" transform="rotate(-25 70 230)" />
+              <path d="M 80 235 L 350 240 C 350 248, 300 252, 80 250 Z" fill="url(#goldSkinGrad)" />
 
-              {/* High 50° Arched Pelvic Bridge & Rounded Glutes */}
-              <path d="M 115 235 C 145 185, 200 140, 250 145 C 285 190, 315 235, 330 250 C 315 252, 280 215, 245 170 C 205 165, 155 210, 115 235 Z" fill="url(#roseSkinGrad)" />
-              <ellipse cx="250" cy="148" rx="26" ry="20" fill="url(#roseSkinGrad)" transform="rotate(-15 250 148)" />
-              <circle cx="180" cy="170" r="10" fill="url(#roseSkinGrad)" />
+              {/* Partner B: Straddling Top Body */}
+              <ellipse cx="295" cy="75" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(25 295 75)" />
+              <path d="M 285 85 C 255 125, 220 165, 205 210 C 225 215, 255 190, 280 145 C 295 115, 305 90, 285 85 Z" fill="url(#roseSkinGrad)" />
+              <circle cx="270" cy="115" r="11" fill="url(#roseSkinGrad)" />
+              <path d="M 270 120 C 285 160, 300 200, 310 235 C 318 234, 310 195, 290 150 Z" fill="url(#roseSkinGrad)" />
+              <ellipse cx="210" cy="210" rx="24" ry="18" fill="url(#roseSkinGrad)" transform="rotate(-10 210 210)" />
             </g>
+          )}
 
-            {/* Partner A (Initiator - Gold Standing Downward Leverage) */}
+          {/* Coital Alignment, Side Spoons & Intimacy */}
+          {(variant === 'velvet-trap' || variant === 'obsidian-lock' || variant === 'lotus-lock' || variant === 'scissors-interlock' || variant === 'lazy-sunday' || variant === 'tandem-horizon' || variant === 'twisted-mermaid' || variant === 'submission-bridge' || variant === 'waterfall-arch') && (
             <g filter="url(#volumetricDrop)">
-              <ellipse cx="275" cy="65" rx="16" ry="19" fill="url(#goldSkinGrad)" transform="rotate(15 275 65)" />
-              {/* Torso & Core plunging downward into exposed pelvic arch */}
-              <path d="M 270 80 C 260 120, 248 150, 240 165 C 265 170, 290 145, 305 110 C 310 85, 295 75, 270 80 Z" fill="url(#goldSkinGrad)" />
-              {/* Dominant Hand Pinning Wrists Overhead */}
-              <path d="M 260 95 C 180 150, 110 200, 65 235 C 72 240, 130 190, 205 145 Z" fill="url(#goldSkinGrad)" opacity="0.85" />
-            </g>
+              {/* Partner B: Reclined / Side Body */}
+              <ellipse cx="110" cy="180" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(-15 110 180)" />
+              <path d="M 120 190 C 165 185, 210 188, 255 190 C 275 145, 315 125, 345 145 C 330 170, 290 195, 260 215 C 215 220, 165 215, 120 190 Z" fill="url(#roseSkinGrad)" />
+              <ellipse cx="250" cy="190" rx="24" ry="18" fill="url(#roseSkinGrad)" />
 
-            {/* Direct Anterior Wall Hotspot */}
-            <g filter="url(#hotspotPulseGlow)">
-              <line x1="250" y1="135" x2="230" y2="160" stroke="#F59E0B" strokeWidth="3.5" />
-              <circle cx="235" cy="155" r="9" fill="#EC4899" className="animate-ping opacity-90" />
-              <circle cx="235" cy="155" r="4.5" fill="#FFFFFF" />
+              {/* Partner A: Embracing Body */}
+              <ellipse cx="85" cy="165" rx="15" ry="18" fill="url(#goldSkinGrad)" transform="rotate(-10 85 165)" />
+              <path d="M 95 175 C 140 170, 185 175, 230 182 C 265 192, 305 208, 350 225 C 340 235, 290 215, 245 198 C 195 190, 145 185, 95 175 Z" fill="url(#goldSkinGrad)" />
+              <path d="M 115 180 C 155 165, 195 165, 230 175 C 225 182, 190 175, 135 190 Z" fill="url(#goldSkinGrad)" />
             </g>
+          )}
+
+          {/* Internal Hotspots & Directional Vectors */}
+          <g filter="url(#hotspotPulseGlow)">
+            <circle cx="230" cy="195" r="9" fill="#EC4899" className="animate-ping opacity-85" />
+            <circle cx="230" cy="195" r="4.5" fill="#FFFFFF" />
+            <circle cx="230" cy="195" r="20" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="3 3" />
           </g>
-        )}
+        </g>
       </svg>
 
       {/* Tilt Angle HUD Indicator */}
@@ -517,27 +303,73 @@ function CadenceWaveVisualizer({
   )
 }
 
-// ─── Main PositionLab Component ───────────────────────────────────────
+// ─── Main PositionLab Component (26-Position Studio) ──────────────────
 export default function PositionLab() {
   const [selectedPosition, setSelectedPosition] = useState<PositionItem>(POSITIONS_DATA[0])
-  const [selectedCategory, setSelectedCategory] = useState<string>('All')
+  const [selectedCategory, setSelectedCategory] = useState<string>('All (26)')
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const [sortBy, setSortBy] = useState<'default' | 'depth' | 'friction' | 'intensity' | 'tilt'>('default')
   const [viewPerspective, setViewPerspective] = useState<'side' | 'contact'>('side')
   const [cadenceBpm, setCadenceBpm] = useState<number>(55)
   const [hapticsActive, setHapticsActive] = useState<boolean>(false)
   const [escapeFlow, setEscapeFlow] = useState<PositionItem[] | null>(null)
+  const [flowIntensity, setFlowIntensity] = useState<'sensual' | 'balanced' | 'intense'>('balanced')
 
-  const categories = ['All', 'Deep Intensity & Power', 'Sensory Dominance', 'Acrobatic Friction', 'Intimate Meltdown']
+  const categories = [
+    'All (26)',
+    'Deep Power & Pelvic Tilt',
+    'Clitoral Friction & Alignment',
+    'Visual Dominance & Control',
+    'Slow-Burn Intimacy & Endurance',
+    'Acrobatic, Kink & Friction'
+  ]
 
-  const filteredPositions = selectedCategory === 'All'
-    ? POSITIONS_DATA
-    : POSITIONS_DATA.filter(p => p.category === selectedCategory)
+  // Filter & Sort Logic
+  const processedPositions = useMemo(() => {
+    let list = POSITIONS_DATA
 
-  // Generate 3-Stage Escaped Flow: Tease -> Peak -> Climax
-  const generateFlow = () => {
-    const tease = POSITIONS_DATA.find(p => p.category === 'Intimate Meltdown' || p.intensityLevel <= 3) || POSITIONS_DATA[5]
-    const peak = POSITIONS_DATA.find(p => p.category === 'Deep Intensity & Power' || p.intensityLevel === 5) || POSITIONS_DATA[0]
-    const climax = POSITIONS_DATA.find(p => p.category === 'Sensory Dominance' || p.clitoralFrictionRating >= 8) || POSITIONS_DATA[2]
-    setEscapeFlow([tease, peak, climax])
+    if (selectedCategory !== 'All (26)') {
+      list = list.filter((p) => p.category === selectedCategory)
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase()
+      list = list.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.tagline.toLowerCase().includes(q) ||
+          p.eroticMechanics.toLowerCase().includes(q) ||
+          p.thrustVector.toLowerCase().includes(q)
+      )
+    }
+
+    if (sortBy === 'depth') list = [...list].sort((a, b) => b.depthRating - a.depthRating)
+    if (sortBy === 'friction') list = [...list].sort((a, b) => b.clitoralFrictionRating - a.clitoralFrictionRating)
+    if (sortBy === 'intensity') list = [...list].sort((a, b) => b.intensityLevel - a.intensityLevel)
+    if (sortBy === 'tilt') list = [...list].sort((a, b) => b.pelvicTiltDeg - a.pelvicTiltDeg)
+
+    return list
+  }, [selectedCategory, searchQuery, sortBy])
+
+  // Generate 3-Stage Escaped Flow from 26 positions based on intensity
+  const generateFlow = (intensity: 'sensual' | 'balanced' | 'intense') => {
+    setFlowIntensity(intensity)
+    if (intensity === 'sensual') {
+      const tease = POSITIONS_DATA.find((p) => p.id === 'lazy-sunday') || POSITIONS_DATA[17]
+      const peak = POSITIONS_DATA.find((p) => p.id === 'lotus-lock') || POSITIONS_DATA[9]
+      const climax = POSITIONS_DATA.find((p) => p.id === 'obsidian-spoon') || POSITIONS_DATA[15]
+      setEscapeFlow([tease, peak, climax])
+    } else if (intensity === 'intense') {
+      const tease = POSITIONS_DATA.find((p) => p.id === 'counter-press') || POSITIONS_DATA[8]
+      const peak = POSITIONS_DATA.find((p) => p.id === 'wall-pin') || POSITIONS_DATA[2]
+      const climax = POSITIONS_DATA.find((p) => p.id === 'piledriver') || POSITIONS_DATA[4]
+      setEscapeFlow([tease, peak, climax])
+    } else {
+      const tease = POSITIONS_DATA.find((p) => p.id === 'velvet-trap') || POSITIONS_DATA[6]
+      const peak = POSITIONS_DATA.find((p) => p.id === 'arch-anchor') || POSITIONS_DATA[0]
+      const climax = POSITIONS_DATA.find((p) => p.id === 'overdrive-cowgirl') || POSITIONS_DATA[11]
+      setEscapeFlow([tease, peak, climax])
+    }
   }
 
   return (
@@ -547,7 +379,7 @@ export default function PositionLab() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <p className="text-[#e8a020] text-xs uppercase tracking-[0.25em] font-light mb-1">
-              Volumetric 3D Physiology & Anatomy Lab
+              Volumetric 3D Physiology & 26-Position Studio
             </p>
             <h2
               className="text-3xl md:text-4xl font-light text-[#f5e8c8]"
@@ -556,24 +388,43 @@ export default function PositionLab() {
               Sensual Position Laboratory
             </h2>
             <p className="text-[#f5e8c8]/40 text-sm mt-1 max-w-xl">
-              Articulated two-tone volumetric human bodies, muscular contours, pelvic angles, and cadence telemetry.
+              26 articulated two-tone volumetric human body models, pelvic angles, and real-time cadence physics.
             </p>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={generateFlow}
-            className="px-5 py-3 rounded-xl text-xs uppercase tracking-widest font-medium transition-all shadow-lg flex items-center gap-2 self-start md:self-auto"
-            style={{
-              background: 'linear-gradient(135deg, #e8a020 0%, #d4601a 100%)',
-              color: '#0a0906',
-              boxShadow: '0 4px 20px rgba(232,160,32,0.35)'
-            }}
-          >
-            <span>⚡</span>
-            Generate Tonight&apos;s 3-Stage Arc
-          </motion.button>
+          {/* Night's Climax Arc Flow Buttons */}
+          <div className="flex flex-wrap items-center gap-2">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => generateFlow('sensual')}
+              className="px-3.5 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-md bg-[#18140C] border border-[rgba(232,160,32,0.3)] text-[#f5e8c8]"
+            >
+              🌸 Slow-Burn Arc
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => generateFlow('balanced')}
+              className="px-4 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-lg text-[#0a0906]"
+              style={{
+                background: 'linear-gradient(135deg, #e8a020 0%, #d4601a 100%)',
+                boxShadow: '0 4px 15px rgba(232,160,32,0.3)'
+              }}
+            >
+              ⚡ Balanced Arc
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => generateFlow('intense')}
+              className="px-3.5 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-md bg-[#240c14] border border-[#EC4899]/40 text-[#F472B6]"
+            >
+              🔥 High-Voltage Arc
+            </motion.button>
+          </div>
         </div>
       </div>
 
@@ -584,13 +435,13 @@ export default function PositionLab() {
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="glass-panel p-6 border border-[#e8a020]/40 bg-[#16120a]/90 relative"
+            className="glass-panel p-6 border border-[#e8a020]/40 bg-[#16120a]/95 relative"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <span className="text-xl">🔥</span>
                 <h3 className="text-lg font-light text-[#f5e8c8]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  Tonight&apos;s Curated 3-Stage Escalation Flow
+                  Tonight&apos;s Curated 3-Stage Escalation Flow ({flowIntensity.toUpperCase()})
                 </h3>
               </div>
               <button
@@ -620,22 +471,62 @@ export default function PositionLab() {
         )}
       </AnimatePresence>
 
-      {/* Category Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className="px-4 py-2 rounded-full text-xs tracking-wider transition-all whitespace-nowrap"
-            style={{
-              background: selectedCategory === cat ? 'rgba(232,160,32,0.18)' : 'rgba(245,232,200,0.03)',
-              color: selectedCategory === cat ? '#e8a020' : 'rgba(245,232,200,0.5)',
-              border: selectedCategory === cat ? '1px solid rgba(232,160,32,0.4)' : '1px solid rgba(245,232,200,0.08)'
-            }}
-          >
-            {cat}
-          </button>
-        ))}
+      {/* Category Filter & Search Bar */}
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+          {/* Search Input */}
+          <div className="relative w-full md:w-80">
+            <input
+              type="text"
+              placeholder="Search 26 positions, cues, mechanics..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#12100A] border border-[rgba(232,160,32,0.2)] rounded-xl px-4 py-2 text-xs text-[#f5e8c8] placeholder-[#f5e8c8]/30 focus:outline-none focus:border-[#e8a020]"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-2 text-xs text-[#f5e8c8]/40 hover:text-[#f5e8c8]"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Sort Selector */}
+          <div className="flex items-center gap-2 self-start md:self-auto">
+            <span className="text-xs text-[#f5e8c8]/40">Sort:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+              className="bg-[#12100A] border border-[rgba(232,160,32,0.2)] rounded-xl px-3 py-1.5 text-xs text-[#f5e8c8] focus:outline-none focus:border-[#e8a020]"
+            >
+              <option value="default">Default Order</option>
+              <option value="depth">Max Depth (High to Low)</option>
+              <option value="friction">Max Clitoral Friction</option>
+              <option value="intensity">Intensity (5 to 1)</option>
+              <option value="tilt">Pelvic Tilt Angle</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Category Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className="px-4 py-2 rounded-full text-xs tracking-wider transition-all whitespace-nowrap"
+              style={{
+                background: selectedCategory === cat ? 'rgba(232,160,32,0.18)' : 'rgba(245,232,200,0.03)',
+                color: selectedCategory === cat ? '#e8a020' : 'rgba(245,232,200,0.5)',
+                border: selectedCategory === cat ? '1px solid rgba(232,160,32,0.4)' : '1px solid rgba(245,232,200,0.08)'
+              }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Main Studio View: Positions Catalog + Active Anatomical Inspector */}
@@ -643,31 +534,33 @@ export default function PositionLab() {
         {/* Left Column: Positions Catalog (5 Cols) */}
         <div className="lg:col-span-5 flex flex-col gap-3">
           <p className="text-xs text-[#f5e8c8]/40 uppercase tracking-widest">
-            Configuration Library ({filteredPositions.length})
+            Configuration Library ({processedPositions.length} of 26)
           </p>
 
-          <div className="flex flex-col gap-3 max-h-[640px] overflow-y-auto pr-1">
-            {filteredPositions.map((pos) => {
+          <div className="flex flex-col gap-2.5 max-h-[660px] overflow-y-auto pr-1">
+            {processedPositions.map((pos) => {
               const isSelected = selectedPosition.id === pos.id
               return (
                 <motion.div
                   key={pos.id}
                   onClick={() => setSelectedPosition(pos)}
                   whileHover={{ x: 4 }}
-                  className="p-4 rounded-xl cursor-pointer transition-all border text-left"
+                  className="p-3.5 rounded-xl cursor-pointer transition-all border text-left"
                   style={{
-                    background: isSelected ? 'rgba(232,160,32,0.1)' : 'rgba(245,232,200,0.02)',
+                    background: isSelected ? 'rgba(232,160,32,0.12)' : 'rgba(245,232,200,0.02)',
                     borderColor: isSelected ? 'rgba(232,160,32,0.5)' : 'rgba(245,232,200,0.08)',
                   }}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-[#e8a020] font-light tracking-wide">{pos.category}</span>
+                    <span className="text-[11px] text-[#e8a020] font-light tracking-wide truncate max-w-[200px]">
+                      {pos.category}
+                    </span>
                     <span className="text-xs text-[#d4601a]">
                       {'🔥'.repeat(pos.intensityLevel)}
                     </span>
                   </div>
                   <h3
-                    className="text-lg font-light text-[#f5e8c8] mt-1"
+                    className="text-base font-light text-[#f5e8c8] mt-1"
                     style={{ fontFamily: 'Cormorant Garamond, serif' }}
                   >
                     {pos.name}
