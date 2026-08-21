@@ -115,6 +115,7 @@ export default function PositionLab() {
 
   const categories = [
     'All (26)',
+    '👑 Her in Control',
     'Deep Power & Pelvic Tilt',
     'Clitoral Friction & Alignment',
     'Visual Dominance & Control',

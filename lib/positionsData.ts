@@ -2,7 +2,13 @@ export interface PositionItem {
   id: string
   name: string
   tagline: string
-  category: 'Deep Power & Pelvic Tilt' | 'Clitoral Friction & Alignment' | 'Visual Dominance & Control' | 'Slow-Burn Intimacy & Endurance' | 'Acrobatic, Kink & Friction'
+  category:
+    | '👑 Her in Control'
+    | 'Deep Power & Pelvic Tilt'
+    | 'Clitoral Friction & Alignment'
+    | 'Visual Dominance & Control'
+    | 'Slow-Burn Intimacy & Endurance'
+    | 'Acrobatic, Kink & Friction'
   depthRating: number // 1 - 10
   clitoralFrictionRating: number // 1 - 10
   intensityLevel: number // 1 - 5 (🔥)
@@ -12,21 +18,22 @@ export interface PositionItem {
   eroticMechanics: string
   idealFor: string
   svgVariant:
+    | 'sovereign-squat'
+    | 'overdrive-cowgirl'
+    | 'lotus-commander'
+    | 'amazon-straddle'
+    | 'desk-commander'
+    | 'velvet-trap'
     | 'arch-anchor'
     | 'high-angle'
     | 'wall-pin'
     | 'submission-bridge'
     | 'piledriver'
     | 'obsidian-clamp'
-    | 'velvet-trap'
     | 'gspot-throne'
     | 'counter-press'
     | 'lotus-lock'
     | 'scissors-interlock'
-    | 'overdrive-cowgirl'
-    | 'amazon-straddle'
-    | 'sovereign-squat'
-    | 'desk-commander'
     | 'obsidian-lock'
     | 'waterfall-arch'
     | 'lazy-sunday'
@@ -41,6 +48,98 @@ export interface PositionItem {
 }
 
 export const POSITIONS_DATA: PositionItem[] = [
+  // ── CATEGORY 0: 👑 Her in Control & Dominance (6) ───────────────────
+  {
+    id: 'sovereign-squat',
+    name: 'The Sovereign Squat',
+    tagline: 'Deep vertical drops and athletic female control',
+    category: '👑 Her in Control',
+    depthRating: 9,
+    clitoralFrictionRating: 9,
+    intensityLevel: 5,
+    pelvicTiltDeg: 40,
+    thrustVector: 'Deep Angled Plunge',
+    dirtyTalkCue: 'Don\'t try to move. Just watch how easily I take all of you.',
+    eroticMechanics: 'Partner B balances in an athletic deep squat straddling Partner A; she fully dictates vertical plunges, depth pauses, and circular grinds with hands pressed against his chest.',
+    idealFor: 'Complete female pacing authority, athletic exhibitionism, and maximum G-spot contact.',
+    svgVariant: 'sovereign-squat'
+  },
+  {
+    id: 'reverse-cowgirl-arch',
+    name: 'The Reverse Cowgirl Arch',
+    tagline: 'Visual dominance, G-spot angle leverage, and pacing control',
+    category: '👑 Her in Control',
+    depthRating: 8,
+    clitoralFrictionRating: 8,
+    intensityLevel: 4,
+    pelvicTiltDeg: 45,
+    thrustVector: 'Rotational Grind',
+    dirtyTalkCue: 'Stay right there... you\'re completely at my mercy.',
+    eroticMechanics: 'Partner B faces away, leaning back at 45° with hands resting on Partner A\'s shins or knees, altering the entry angle and grinding continuously while Partner A admires the view.',
+    idealFor: 'Female-led pacing dominance, visual exhibitionism, and hands-free male surrender.',
+    svgVariant: 'overdrive-cowgirl'
+  },
+  {
+    id: 'lotus-commander',
+    name: 'The Lotus Commander',
+    tagline: 'Total intimate proximity and rotational grinding authority',
+    category: '👑 Her in Control',
+    depthRating: 7,
+    clitoralFrictionRating: 9,
+    intensityLevel: 3,
+    pelvicTiltDeg: 15,
+    thrustVector: 'Rotational Grind',
+    dirtyTalkCue: 'Look at me... tell me who\'s in charge right now.',
+    eroticMechanics: 'Partner A seated cross-legged; Partner B straddles his lap with arms wrapping his shoulders, dictating the slow circular pelvic rolls and continuous clitoral friction.',
+    idealFor: 'Deep emotional dominance, eye contact, and synchronized micro-circular grinding.',
+    svgVariant: 'lotus-commander'
+  },
+  {
+    id: 'amazon-pin',
+    name: 'The Amazon Pin',
+    tagline: 'Total physical restraint and clitoral friction control',
+    category: '👑 Her in Control',
+    depthRating: 8,
+    clitoralFrictionRating: 9,
+    intensityLevel: 4,
+    pelvicTiltDeg: 35,
+    thrustVector: 'Rotational Grind',
+    dirtyTalkCue: 'Keep your hands right above your head. Don\'t move them.',
+    eroticMechanics: 'Partner A lies flat with arms pinned overhead; Partner B straddles his hips with knees high, driving deep, rhythmic pubic-bone friction while dictating every thrust.',
+    idealFor: 'Empowered female dominance, physical male surrender, and blended orgasms.',
+    svgVariant: 'amazon-straddle'
+  },
+  {
+    id: 'desk-empress',
+    name: 'The Desk Empress',
+    tagline: 'Elevated power dynamic with zero lower-back strain',
+    category: '👑 Her in Control',
+    depthRating: 8,
+    clitoralFrictionRating: 8,
+    intensityLevel: 4,
+    pelvicTiltDeg: 25,
+    thrustVector: 'Slow Linear Piston',
+    dirtyTalkCue: 'Come here. You enter when I tell you to enter.',
+    eroticMechanics: 'Partner B sits high on a desk or counter edge, guiding Partner A\'s hips between her thighs, dictating how close and deep he enters with her feet locked behind his back.',
+    idealFor: 'Spontaneous authority, role-play dynamics, and effortless female leverage.',
+    svgVariant: 'desk-commander'
+  },
+  {
+    id: 'cat-straddle',
+    name: 'The Cat Straddle',
+    tagline: 'Relentless, unbroken clitoral stimulation led by female hip rolls',
+    category: '👑 Her in Control',
+    depthRating: 7,
+    clitoralFrictionRating: 10,
+    intensityLevel: 4,
+    pelvicTiltDeg: 15,
+    thrustVector: 'Rotational Grind',
+    dirtyTalkCue: 'Feel that pressure... I\'m not letting you pull back even an inch.',
+    eroticMechanics: 'Receiver mounts from above with full chest-to-chest contact, locking pubic bones together and executing heavy, circular hip rolls with zero shaft withdrawal.',
+    idealFor: 'Guaranteed clitoral orgasm through relentless continuous coital alignment friction.',
+    svgVariant: 'velvet-trap'
+  },
+
   // ── CATEGORY 1: Deep Power & Pelvic Tilt (6) ──────────────────────────
   {
     id: 'arch-anchor',
@@ -133,22 +232,7 @@ export const POSITIONS_DATA: PositionItem[] = [
     svgVariant: 'obsidian-clamp'
   },
 
-  // ── CATEGORY 2: Clitoral Friction & Coital Alignment (5) ─────────────
-  {
-    id: 'velvet-trap',
-    name: 'The Velvet Trap',
-    tagline: 'Relentless constant grinding clitoral & G-spot stimulation',
-    category: 'Clitoral Friction & Alignment',
-    depthRating: 7,
-    clitoralFrictionRating: 10,
-    intensityLevel: 4,
-    pelvicTiltDeg: 15,
-    thrustVector: 'Rotational Grind',
-    dirtyTalkCue: 'Feel that pressure right against you... let every slow roll take you over.',
-    eroticMechanics: 'Inverted Coital Alignment Technique (CAT). Constant base-of-shaft pressure locked firmly against clitoris with zero withdrawal in slow pelvic rolls.',
-    idealFor: 'Reliable, powerful blended orgasms through sustained constant friction.',
-    svgVariant: 'velvet-trap'
-  },
+  // ── CATEGORY 2: Clitoral Friction & Coital Alignment (4) ─────────────
   {
     id: 'gspot-throne',
     name: 'The G-Spot Throne',
@@ -210,7 +294,7 @@ export const POSITIONS_DATA: PositionItem[] = [
     svgVariant: 'scissors-interlock'
   },
 
-  // ── CATEGORY 3: Visual Dominance & Control (4) ────────────────────────
+  // ── CATEGORY 3: Visual Dominance & Control (2) ────────────────────────
   {
     id: 'overdrive-cowgirl',
     name: 'The Overdrive Cowgirl',
@@ -225,36 +309,6 @@ export const POSITIONS_DATA: PositionItem[] = [
     eroticMechanics: 'Top partner straddles facing partner\'s feet, leaning back at a 45° angle with hands on knees to control tempo, depth, and friction.',
     idealFor: 'Female-led pacing dominance, full view of the body, and hands-free partner surrender.',
     svgVariant: 'overdrive-cowgirl'
-  },
-  {
-    id: 'amazon-straddle',
-    name: 'The Amazon Straddle',
-    tagline: 'Athletic forward dominance with full depth control',
-    category: 'Visual Dominance & Control',
-    depthRating: 8,
-    clitoralFrictionRating: 7,
-    intensityLevel: 4,
-    pelvicTiltDeg: 35,
-    thrustVector: 'Deep Angled Plunge',
-    dirtyTalkCue: 'Don\'t move... I\'m taking exactly what I want.',
-    eroticMechanics: 'Initiator lying flat with knees up; receiver straddles upright, using legs and core to control every millimeter of depth and speed.',
-    idealFor: 'Empowered female dominance and visual pleasure for the bottom partner.',
-    svgVariant: 'amazon-straddle'
-  },
-  {
-    id: 'sovereign-squat',
-    name: 'The Sovereign Squat',
-    tagline: 'High-intensity athletic squat with maximum vertical drop',
-    category: 'Visual Dominance & Control',
-    depthRating: 9,
-    clitoralFrictionRating: 8,
-    intensityLevel: 5,
-    pelvicTiltDeg: 40,
-    thrustVector: 'Deep Angled Plunge',
-    dirtyTalkCue: 'Watch how I drop down on you.',
-    eroticMechanics: 'Receiver balances in a deep athletic squat over reclined partner, dropping vertically with full gravitational force and deep pelvic contact.',
-    idealFor: 'High-energy, athletic exhibitionism and intense visual stimulation.',
-    svgVariant: 'sovereign-squat'
   },
   {
     id: 'desk-commander',
