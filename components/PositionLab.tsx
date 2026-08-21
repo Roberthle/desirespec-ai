@@ -1,221 +1,19 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import { motion, AnimatePresence } from 'framer-motion'
 import { POSITIONS_DATA, PositionItem } from '../lib/positionsData'
 
-// ─── 26-Position Volumetric 3D Anatomical Renderer ───────────────────
-function Volumetric3DPositionCanvas({
-  variant,
-  viewPerspective,
-  thrustVector,
-  pelvicTiltDeg
-}: {
-  variant: PositionItem['svgVariant']
-  viewPerspective: 'side' | 'contact'
-  thrustVector: PositionItem['thrustVector']
-  pelvicTiltDeg: number
-}) {
-  const rhythmClass =
-    thrustVector === 'Deep Angled Plunge'
-      ? 'rhythm-plunge'
-      : thrustVector === 'Rotational Grind'
-      ? 'rhythm-grind'
-      : 'rhythm-flutter'
-
-  return (
-    <div className="relative w-full h-[360px] flex items-center justify-center overflow-hidden rounded-2xl bg-[#080705] border border-[rgba(232,160,32,0.25)] shadow-[inset_0_0_80px_rgba(0,0,0,0.9),0_10px_40px_rgba(0,0,0,0.8)]">
-      {/* 3D Atmospheric Lighting Glow */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_35%,rgba(245,158,11,0.16)_0%,rgba(236,72,153,0.08)_40%,rgba(0,0,0,0.95)_80%)]" />
-
-      {/* Blueprint Grid Floor */}
-      <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none stroke-[#f5e8c8]">
-        <defs>
-          <pattern id="denseGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" strokeWidth="0.5" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#denseGrid)" />
-      </svg>
-
-      {/* Main High-Definition Scalable Vector Model */}
-      <svg
-        viewBox="0 0 460 300"
-        className="w-full h-full p-2 relative z-10 select-none"
-      >
-        <defs>
-          {/* Partner A (Initiator) - Muscular Amber/Gold 3D Shading */}
-          <linearGradient id="goldSkinGrad" x1="20%" y1="0%" x2="80%" y2="100%">
-            <stop offset="0%" stopColor="#FEF08A" />
-            <stop offset="35%" stopColor="#F59E0B" />
-            <stop offset="75%" stopColor="#B45309" />
-            <stop offset="100%" stopColor="#451A03" />
-          </linearGradient>
-
-          <linearGradient id="goldMuscleShadow" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#D97706" stopOpacity="0.9" />
-            <stop offset="50%" stopColor="#92400E" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#451A03" stopOpacity="0.9" />
-          </linearGradient>
-
-          <linearGradient id="goldRimLight" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.8" />
-            <stop offset="50%" stopColor="#FDE68A" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
-          </linearGradient>
-
-          {/* Partner B (Receiver) - Voluptuous Rose-Dusk/Obsidian 3D Shading */}
-          <linearGradient id="roseSkinGrad" x1="15%" y1="0%" x2="85%" y2="100%">
-            <stop offset="0%" stopColor="#FBCFE8" />
-            <stop offset="30%" stopColor="#F472B6" />
-            <stop offset="65%" stopColor="#DB2777" />
-            <stop offset="85%" stopColor="#831843" />
-            <stop offset="100%" stopColor="#2A0614" />
-          </linearGradient>
-
-          <linearGradient id="roseMuscleShadow" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#BE185D" stopOpacity="0.8" />
-            <stop offset="70%" stopColor="#70072B" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#1E040D" stopOpacity="0.95" />
-          </linearGradient>
-
-          <linearGradient id="roseRimLight" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#FFF1F2" stopOpacity="0.85" />
-            <stop offset="40%" stopColor="#F472B6" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#9D174D" stopOpacity="0" />
-          </linearGradient>
-
-          {/* 3D Depth Filters */}
-          <filter id="volumetricDrop" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="3" dy="6" stdDeviation="5" floodColor="#000000" floodOpacity="0.8" />
-          </filter>
-
-          <filter id="hotspotPulseGlow" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="6" result="glow" />
-            <feComposite in="SourceGraphic" in2="glow" operator="over" />
-          </filter>
-        </defs>
-
-        <g className={rhythmClass}>
-          {/* Surface Baseline */}
-          <path d="M 30 250 L 430 250" stroke="rgba(245,232,200,0.15)" strokeWidth="2" />
-
-          {/* Render Volumetric Poses Based on Position Variant */}
-          {/* Category 1: Deep Power & Pelvic Tilt */}
-          {(variant === 'arch-anchor' || variant === 'obsidian-clamp' || variant === 'velvet-hammock' || variant === 'prone-guillotine') && (
-            <g filter="url(#volumetricDrop)">
-              {/* Partner B: Prone Body */}
-              <ellipse cx="60" cy="225" rx="14" ry="18" fill="url(#roseSkinGrad)" transform="rotate(-20 60 225)" />
-              <path d="M 68 230 C 85 235, 110 235, 130 225 L 125 242 C 105 246, 80 244, 68 230 Z" fill="url(#roseSkinGrad)" />
-              <path d="M 125 228 C 145 210, 175 190, 205 185 C 230 180, 255 195, 260 215 C 255 240, 215 248, 175 246 C 145 245, 130 240, 125 228 Z" fill="url(#roseSkinGrad)" />
-              <ellipse cx="230" cy="195" rx="28" ry="24" fill="url(#roseSkinGrad)" transform="rotate(-15 230 195)" />
-              <path d="M 245 195 C 275 205, 320 225, 380 245 C 385 249, 380 252, 365 252 C 310 250, 265 235, 235 215 Z" fill="url(#roseSkinGrad)" />
-
-              {/* Partner A: Mounted Over */}
-              <ellipse cx="170" cy="95" rx="16" ry="20" fill="url(#goldSkinGrad)" transform="rotate(15 170 95)" />
-              <path d="M 160 115 C 190 120, 225 135, 245 160 C 255 175, 250 200, 240 210 C 220 215, 195 190, 180 160 C 165 135, 155 125, 160 115 Z" fill="url(#goldSkinGrad)" />
-              <path d="M 180 135 C 195 165, 210 185, 220 195 C 215 202, 205 198, 195 180 C 185 160, 170 145, 175 135 Z" fill="url(#goldSkinGrad)" />
-              <ellipse cx="220" cy="195" rx="7" ry="5" fill="#FDE68A" />
-              <path d="M 245 165 C 265 175, 275 200, 270 225 C 265 240, 250 250, 240 250 C 242 235, 255 215, 245 195 Z" fill="url(#goldSkinGrad)" />
-            </g>
-          )}
-
-          {/* Elevated Suspensions & Inversions */}
-          {(variant === 'high-angle' || variant === 'piledriver' || variant === 'anvil-press') && (
-            <g filter="url(#volumetricDrop)">
-              {/* Partner B: Inverted Pelvis Fold */}
-              <ellipse cx="75" cy="235" rx="14" ry="17" fill="url(#roseSkinGrad)" />
-              <path d="M 85 240 C 130 242, 175 235, 215 210 C 235 195, 245 170, 250 140 L 265 145 C 255 185, 240 215, 215 240 Z" fill="url(#roseSkinGrad)" />
-              <path d="M 220 205 C 230 160, 250 100, 280 60 C 292 65, 270 120, 245 190 Z" fill="url(#roseSkinGrad)" />
-              <ellipse cx="280" cy="60" rx="10" ry="14" fill="url(#roseSkinGrad)" />
-
-              {/* Partner A: Standing/Kneeling Plunge */}
-              <ellipse cx="300" cy="80" rx="16" ry="19" fill="url(#goldSkinGrad)" transform="rotate(-15 300 80)" />
-              <path d="M 290 95 C 275 135, 260 175, 250 215 C 270 218, 295 195, 310 160 C 320 125, 310 100, 290 95 Z" fill="url(#goldSkinGrad)" />
-              <path d="M 250 215 C 270 235, 295 248, 325 250 C 330 245, 315 225, 285 205 Z" fill="url(#goldSkinGrad)" />
-            </g>
-          )}
-
-          {/* Standing & Vertical Wall Poses */}
-          {(variant === 'wall-pin' || variant === 'counter-press' || variant === 'standing-helix' || variant === 'suspended-lotus' || variant === 'desk-commander' || variant === 'cross-axis') && (
-            <g filter="url(#volumetricDrop)">
-              {/* Vertical Wall/Counter Backing */}
-              <rect x="75" y="20" width="18" height="260" fill="#18140E" stroke="rgba(245,232,200,0.3)" strokeWidth="2" />
-
-              {/* Partner B: Elevated Hoisted Body */}
-              <ellipse cx="125" cy="70" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(-10 125 70)" />
-              <path d="M 115 85 C 118 125, 115 155, 125 190 C 155 170, 195 155, 225 145 C 215 165, 175 185, 135 205 C 115 205, 110 160, 115 85 Z" fill="url(#roseSkinGrad)" />
-              <circle cx="140" cy="115" r="10" fill="url(#roseSkinGrad)" />
-              <ellipse cx="130" cy="190" rx="20" ry="16" fill="url(#roseSkinGrad)" />
-
-              {/* Partner A: Grounded Power Stance */}
-              <ellipse cx="215" cy="80" rx="16" ry="19" fill="url(#goldSkinGrad)" transform="rotate(25 215 80)" />
-              <path d="M 210 95 C 200 135, 190 175, 175 205 C 200 205, 225 175, 235 140 C 240 110, 230 95, 210 95 Z" fill="url(#goldSkinGrad)" />
-              <path d="M 200 120 C 165 145, 145 175, 130 195 C 135 202, 160 185, 190 155 Z" fill="url(#goldSkinGrad)" />
-              <path d="M 175 205 C 185 235, 205 265, 215 275 C 228 272, 215 240, 200 210 Z" fill="url(#goldSkinGrad)" />
-            </g>
-          )}
-
-          {/* Straddles, Cowgirls & Dominance */}
-          {(variant === 'overdrive-cowgirl' || variant === 'amazon-straddle' || variant === 'sovereign-squat' || variant === 'gspot-throne') && (
-            <g filter="url(#volumetricDrop)">
-              {/* Partner A: Base Reclined Body */}
-              <ellipse cx="70" cy="230" rx="15" ry="18" fill="url(#goldSkinGrad)" transform="rotate(-25 70 230)" />
-              <path d="M 80 235 L 350 240 C 350 248, 300 252, 80 250 Z" fill="url(#goldSkinGrad)" />
-
-              {/* Partner B: Straddling Top Body */}
-              <ellipse cx="295" cy="75" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(25 295 75)" />
-              <path d="M 285 85 C 255 125, 220 165, 205 210 C 225 215, 255 190, 280 145 C 295 115, 305 90, 285 85 Z" fill="url(#roseSkinGrad)" />
-              <circle cx="270" cy="115" r="11" fill="url(#roseSkinGrad)" />
-              <path d="M 270 120 C 285 160, 300 200, 310 235 C 318 234, 310 195, 290 150 Z" fill="url(#roseSkinGrad)" />
-              <ellipse cx="210" cy="210" rx="24" ry="18" fill="url(#roseSkinGrad)" transform="rotate(-10 210 210)" />
-            </g>
-          )}
-
-          {/* Coital Alignment, Side Spoons & Intimacy */}
-          {(variant === 'velvet-trap' || variant === 'obsidian-lock' || variant === 'lotus-lock' || variant === 'scissors-interlock' || variant === 'lazy-sunday' || variant === 'tandem-horizon' || variant === 'twisted-mermaid' || variant === 'submission-bridge' || variant === 'waterfall-arch') && (
-            <g filter="url(#volumetricDrop)">
-              {/* Partner B: Reclined / Side Body */}
-              <ellipse cx="110" cy="180" rx="14" ry="17" fill="url(#roseSkinGrad)" transform="rotate(-15 110 180)" />
-              <path d="M 120 190 C 165 185, 210 188, 255 190 C 275 145, 315 125, 345 145 C 330 170, 290 195, 260 215 C 215 220, 165 215, 120 190 Z" fill="url(#roseSkinGrad)" />
-              <ellipse cx="250" cy="190" rx="24" ry="18" fill="url(#roseSkinGrad)" />
-
-              {/* Partner A: Embracing Body */}
-              <ellipse cx="85" cy="165" rx="15" ry="18" fill="url(#goldSkinGrad)" transform="rotate(-10 85 165)" />
-              <path d="M 95 175 C 140 170, 185 175, 230 182 C 265 192, 305 208, 350 225 C 340 235, 290 215, 245 198 C 195 190, 145 185, 95 175 Z" fill="url(#goldSkinGrad)" />
-              <path d="M 115 180 C 155 165, 195 165, 230 175 C 225 182, 190 175, 135 190 Z" fill="url(#goldSkinGrad)" />
-            </g>
-          )}
-
-          {/* Internal Hotspots & Directional Vectors */}
-          <g filter="url(#hotspotPulseGlow)">
-            <circle cx="230" cy="195" r="9" fill="#EC4899" className="animate-ping opacity-85" />
-            <circle cx="230" cy="195" r="4.5" fill="#FFFFFF" />
-            <circle cx="230" cy="195" r="20" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="3 3" />
-          </g>
-        </g>
-      </svg>
-
-      {/* Tilt Angle HUD Indicator */}
-      <div className="absolute top-3 left-3 bg-[#0a0906]/85 px-3 py-1.5 rounded-lg border border-[rgba(232,160,32,0.35)] text-xs text-[#f5e8c8] tracking-widest uppercase flex items-center gap-2 backdrop-blur-md shadow-lg">
-        <span className="w-2 h-2 rounded-full bg-[#e8a020] animate-pulse" />
-        Pelvic Tilt: <span className="text-[#e8a020] font-semibold">{pelvicTiltDeg}°</span>
-      </div>
-
-      {/* Two-Tone Identity Legend Badge */}
-      <div className="absolute bottom-3 left-3 bg-[#0a0906]/90 px-3.5 py-2 rounded-xl border border-[rgba(245,232,200,0.15)] flex items-center gap-4 text-xs tracking-wider backdrop-blur-md shadow-lg">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B] shadow-[0_0_8px_#F59E0B]" />
-          <span className="text-[#FDE68A] font-medium">Initiator (Gold)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#EC4899] shadow-[0_0_8px_#EC4899]" />
-          <span className="text-[#F472B6] font-medium">Receiver (Rose)</span>
-        </div>
-      </div>
+// Dynamically import Three.js WebGL Viewport with SSR disabled to prevent hydration mismatch
+const ThreePositionViewport = dynamic(() => import('./ThreePositionViewport'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[400px] flex items-center justify-center rounded-2xl bg-[#080705] border border-[rgba(232,160,32,0.2)] text-[#e8a020] text-xs uppercase tracking-widest animate-pulse">
+      Initialising WebGL 3D Anatomy Engine...
     </div>
   )
-}
+})
 
 // ─── Dynamic Cadence & Wave Vector Canvas ─────────────────────────────
 function CadenceWaveVisualizer({
@@ -303,13 +101,13 @@ function CadenceWaveVisualizer({
   )
 }
 
-// ─── Main PositionLab Component (26-Position Studio) ──────────────────
+// ─── Main PositionLab Component (3D POV Studio) ───────────────────────
 export default function PositionLab() {
   const [selectedPosition, setSelectedPosition] = useState<PositionItem>(POSITIONS_DATA[0])
   const [selectedCategory, setSelectedCategory] = useState<string>('All (26)')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortBy, setSortBy] = useState<'default' | 'depth' | 'friction' | 'intensity' | 'tilt'>('default')
-  const [viewPerspective, setViewPerspective] = useState<'side' | 'contact'>('side')
+  const [povPreset, setPovPreset] = useState<'orbit' | 'povA' | 'povB' | 'pelvicZoom'>('orbit')
   const [cadenceBpm, setCadenceBpm] = useState<number>(55)
   const [hapticsActive, setHapticsActive] = useState<boolean>(false)
   const [escapeFlow, setEscapeFlow] = useState<PositionItem[] | null>(null)
@@ -379,7 +177,7 @@ export default function PositionLab() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <p className="text-[#e8a020] text-xs uppercase tracking-[0.25em] font-light mb-1">
-              Volumetric 3D Physiology & 26-Position Studio
+              Interactive WebGL Three.js & POV Camera Studio
             </p>
             <h2
               className="text-3xl md:text-4xl font-light text-[#f5e8c8]"
@@ -388,7 +186,7 @@ export default function PositionLab() {
               Sensual Position Laboratory
             </h2>
             <p className="text-[#f5e8c8]/40 text-sm mt-1 max-w-xl">
-              26 articulated two-tone volumetric human body models, pelvic angles, and real-time cadence physics.
+              Real-time 3D camera angles, First-Person POV views, volumetric anatomy shaders, and cadence physics.
             </p>
           </div>
 
@@ -529,7 +327,7 @@ export default function PositionLab() {
         </div>
       </div>
 
-      {/* Main Studio View: Positions Catalog + Active Anatomical Inspector */}
+      {/* Main Studio View: Positions Catalog + Active 3D POV Viewport */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column: Positions Catalog (5 Cols) */}
         <div className="lg:col-span-5 flex flex-col gap-3">
@@ -572,43 +370,63 @@ export default function PositionLab() {
           </div>
         </div>
 
-        {/* Right Column: Interactive 3D Model & Telemetry Inspector (7 Cols) */}
+        {/* Right Column: Real-Time WebGL 3D POV Studio & Inspector (7 Cols) */}
         <div className="lg:col-span-7 flex flex-col gap-5">
-          {/* Perspective View Switcher */}
-          <div className="flex items-center justify-between">
+          {/* 3D POV Camera Angle Presets */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <span className="text-xs uppercase tracking-widest text-[#f5e8c8]/40 font-medium">
-              3D Volumetric Articulation
+              3D POV Camera System
             </span>
-            <div className="flex items-center gap-1 bg-[#12100a] p-1 rounded-lg border border-[rgba(232,160,32,0.15)]">
+            <div className="flex items-center gap-1 bg-[#12100a] p-1 rounded-lg border border-[rgba(232,160,32,0.15)] overflow-x-auto">
               <button
-                onClick={() => setViewPerspective('side')}
-                className="px-3 py-1 text-xs rounded transition-all"
+                onClick={() => setPovPreset('orbit')}
+                className="px-2.5 py-1 text-xs rounded transition-all whitespace-nowrap"
                 style={{
-                  background: viewPerspective === 'side' ? 'rgba(232,160,32,0.25)' : 'transparent',
-                  color: viewPerspective === 'side' ? '#e8a020' : 'rgba(245,232,200,0.4)',
+                  background: povPreset === 'orbit' ? 'rgba(232,160,32,0.25)' : 'transparent',
+                  color: povPreset === 'orbit' ? '#e8a020' : 'rgba(245,232,200,0.4)',
                 }}
               >
-                Side Profile View
+                📐 360° Studio
               </button>
               <button
-                onClick={() => setViewPerspective('contact')}
-                className="px-3 py-1 text-xs rounded transition-all"
+                onClick={() => setPovPreset('povA')}
+                className="px-2.5 py-1 text-xs rounded transition-all whitespace-nowrap"
                 style={{
-                  background: viewPerspective === 'contact' ? 'rgba(232,160,32,0.25)' : 'transparent',
-                  color: viewPerspective === 'contact' ? '#e8a020' : 'rgba(245,232,200,0.4)',
+                  background: povPreset === 'povA' ? 'rgba(245,158,11,0.25)' : 'transparent',
+                  color: povPreset === 'povA' ? '#F59E0B' : 'rgba(245,232,200,0.4)',
                 }}
               >
-                Limb-Lock View
+                👁️ Partner A POV
+              </button>
+              <button
+                onClick={() => setPovPreset('povB')}
+                className="px-2.5 py-1 text-xs rounded transition-all whitespace-nowrap"
+                style={{
+                  background: povPreset === 'povB' ? 'rgba(236,72,153,0.25)' : 'transparent',
+                  color: povPreset === 'povB' ? '#EC4899' : 'rgba(245,232,200,0.4)',
+                }}
+              >
+                👁️ Partner B POV
+              </button>
+              <button
+                onClick={() => setPovPreset('pelvicZoom')}
+                className="px-2.5 py-1 text-xs rounded transition-all whitespace-nowrap"
+                style={{
+                  background: povPreset === 'pelvicZoom' ? 'rgba(232,160,32,0.25)' : 'transparent',
+                  color: povPreset === 'pelvicZoom' ? '#e8a020' : 'rgba(245,232,200,0.4)',
+                }}
+              >
+                🔍 Pelvic Alignment
               </button>
             </div>
           </div>
 
-          {/* High-Definition Volumetric 3D Model View */}
-          <Volumetric3DPositionCanvas
+          {/* Real-Time WebGL 3D Viewport */}
+          <ThreePositionViewport
             variant={selectedPosition.svgVariant}
-            viewPerspective={viewPerspective}
             thrustVector={selectedPosition.thrustVector}
-            pelvicTiltDeg={selectedPosition.pelvicTiltDeg}
+            bpm={cadenceBpm}
+            povPreset={povPreset}
           />
 
           {/* Metrics & Physics Badges */}
