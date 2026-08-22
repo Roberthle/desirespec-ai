@@ -23,12 +23,12 @@ export const metadata: Metadata = {
 export default function HealingIntimacyBlocksGuidePage() {
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'MedicalWebPage',
-    name: 'Healing Intimacy Blocks & Body Freezing: Somatic Safety Protocols',
-    description: 'Clinical and somatic practices to overcome nervous system shutdown and emotional blocks during intimacy.',
+    '@type': 'Article',
+    headline: 'Why Your Body Freezes During Intimacy (And How to Gently Heal the Block)',
+    description: 'Practical and somatic exercises to overcome nervous system shutdown and emotional blocks during intimacy.',
     author: {
       '@type': 'Organization',
-      name: 'DesireSpec AI Somatic & Biomechanics Research Board',
+      name: 'DesireSpec AI Team',
     },
   }
 
@@ -54,13 +54,13 @@ export default function HealingIntimacyBlocksGuidePage() {
 
         <div className="glass-panel p-8 md:p-10 border border-[rgba(232,160,32,0.3)] bg-[#0A0906]/90">
           <span className="text-xs uppercase tracking-[0.25em] text-[#E8A020] font-mono block mb-3">
-            Trauma-Informed & Somatic Healing
+            Somatic &amp; Communication Guide
           </span>
           <h1 className="text-3xl md:text-5xl font-serif text-[#FDE68A] tracking-tight leading-tight">
             Why Your Body Freezes During Intimacy (And How to Gently Heal the Block)
           </h1>
           <p className="text-sm text-[#F5E8C8]/70 mt-4">
-            Published by the DesireSpec AI Somatic Research Board · 9 min read
+            Published by DesireSpec AI · 8 min read
           </p>
         </div>
 

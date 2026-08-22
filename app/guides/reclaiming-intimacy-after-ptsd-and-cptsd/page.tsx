@@ -24,12 +24,12 @@ export const metadata: Metadata = {
 export default function PtsdIntimacyGuidePage() {
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'MedicalWebPage',
-    name: 'Reclaiming Intimacy After PTSD & CPTSD: Somatic Reclamation Protocols',
-    description: 'Trauma-informed clinical practices for individuals and couples navigating PTSD, CPTSD, and intimacy hypervigilance.',
+    '@type': 'Article',
+    headline: 'Reclaiming Intimacy After PTSD & CPTSD: When Your Body Has Stopped Trying',
+    description: 'Supportive practices for individuals and couples navigating PTSD, CPTSD, and intimacy hypervigilance.',
     author: {
       '@type': 'Organization',
-      name: 'DesireSpec AI Somatic & Trauma Research Board',
+      name: 'DesireSpec AI Team',
     },
   }
 
@@ -55,13 +55,13 @@ export default function PtsdIntimacyGuidePage() {
 
         <div className="glass-panel p-8 md:p-10 border border-[rgba(232,160,32,0.3)] bg-[#0A0906]/90">
           <span className="text-xs uppercase tracking-[0.25em] text-[#E8A020] font-mono block mb-3">
-            Trauma-Informed Somatic Restoration
+            Supportive Intimacy Restoration
           </span>
           <h1 className="text-3xl md:text-5xl font-serif text-[#FDE68A] tracking-tight leading-tight">
             Reclaiming Intimacy After PTSD &amp; CPTSD: When Your Body Has Stopped Trying
           </h1>
           <p className="text-sm text-[#F5E8C8]/70 mt-4">
-            Published by the DesireSpec AI Trauma Research Board · 10 min read
+            Published by DesireSpec AI · 8 min read
           </p>
         </div>
 
