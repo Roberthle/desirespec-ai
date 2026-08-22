@@ -5,6 +5,8 @@ import dynamic from 'next/dynamic'
 import { motion, AnimatePresence } from 'framer-motion'
 import { POSITIONS_DATA, PositionItem } from '../lib/positionsData'
 import BiomechanicalHUD from './BiomechanicalHUD'
+import CoupleSyncModal from './CoupleSyncModal'
+import AlignmentQuizModal from './AlignmentQuizModal'
 
 // Dynamically import Three.js WebGL Viewport with SSR disabled to prevent hydration mismatch
 const ThreePositionViewport = dynamic(() => import('./ThreePositionViewport'), {
@@ -113,6 +115,8 @@ export default function PositionLab() {
   const [hapticsActive, setHapticsActive] = useState<boolean>(false)
   const [escapeFlow, setEscapeFlow] = useState<PositionItem[] | null>(null)
   const [flowIntensity, setFlowIntensity] = useState<'sensual' | 'balanced' | 'intense'>('balanced')
+  const [isSyncModalOpen, setIsSyncModalOpen] = useState<boolean>(false)
+  const [isQuizModalOpen, setIsQuizModalOpen] = useState<boolean>(false)
 
   const categories = [
     'All (26)',
@@ -192,37 +196,55 @@ export default function PositionLab() {
             </p>
           </div>
 
-          {/* Night's Climax Arc Flow Buttons */}
+          {/* Night's Climax Arc Flow & Couple Viral Buttons */}
           <div className="flex flex-wrap items-center gap-2">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setIsSyncModalOpen(true)}
+              className="px-3.5 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-semibold transition-all shadow-md bg-[#1C160C] border border-[#E8A020] text-[#FDE68A] flex items-center gap-1.5"
+            >
+              <span>📲</span> Sync with Partner
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setIsQuizModalOpen(true)}
+              className="px-3.5 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-md bg-[#18140C] border border-[rgba(232,160,32,0.3)] text-[#F5E8C8] flex items-center gap-1.5"
+            >
+              <span>✨</span> Alignment Quiz
+            </motion.button>
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => generateFlow('sensual')}
-              className="px-3.5 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-md bg-[#18140C] border border-[rgba(232,160,32,0.3)] text-[#f5e8c8]"
+              className="px-3 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-md bg-[#18140C] border border-[rgba(232,160,32,0.3)] text-[#f5e8c8]"
             >
-              🌸 Slow-Burn Arc
+              🌸 Slow Arc
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => generateFlow('balanced')}
-              className="px-4 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-lg text-[#0a0906]"
+              className="px-3.5 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-lg text-[#0a0906]"
               style={{
                 background: 'linear-gradient(135deg, #e8a020 0%, #d4601a 100%)',
                 boxShadow: '0 4px 15px rgba(232,160,32,0.3)'
               }}
             >
-              ⚡ Balanced Arc
+              ⚡ Balanced
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => generateFlow('intense')}
-              className="px-3.5 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-md bg-[#240c14] border border-[#EC4899]/40 text-[#F472B6]"
+              className="px-3 py-2.5 rounded-xl text-[11px] uppercase tracking-wider font-medium transition-all shadow-md bg-[#240c14] border border-[#EC4899]/40 text-[#F472B6]"
             >
-              🔥 High-Voltage Arc
+              🔥 High-Voltage
             </motion.button>
           </div>
         </div>
@@ -521,6 +543,24 @@ export default function PositionLab() {
           </div>
         </div>
       </div>
+
+      {/* Couple Sync Modal */}
+      <CoupleSyncModal
+        isOpen={isSyncModalOpen}
+        onClose={() => setIsSyncModalOpen(false)}
+        currentPositionId={selectedPosition.id}
+        currentBpm={cadenceBpm}
+      />
+
+      {/* Alignment Quiz Modal */}
+      <AlignmentQuizModal
+        isOpen={isQuizModalOpen}
+        onClose={() => setIsQuizModalOpen(false)}
+        onSelectRecommendedPosition={(posId) => {
+          const match = POSITIONS_DATA.find((p) => p.id === posId)
+          if (match) setSelectedPosition(match)
+        }}
+      />
     </div>
   )
 }
